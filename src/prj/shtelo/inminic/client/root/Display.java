@@ -20,9 +20,17 @@ public class Display {
     private void init() {
         Dimension size = new Dimension(width, height);
 
+        String os = System.getProperty("os.name");
+
         frame = new JFrame();
         frame.setTitle(title);
-        frame.setSize(width + 16, height + 39);  // 아직 이 문제에 대한 깔끔한 해결법이 발견되지 않음.
+        if (os.equalsIgnoreCase("Windows 8.1")) {
+            frame.setSize(width + 16, height + 39);
+        } else if (os.equalsIgnoreCase("Mac OS X")) {
+            frame.setSize(width, height + 22);
+        } else {
+            frame.setSize(size);
+        }
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
 
