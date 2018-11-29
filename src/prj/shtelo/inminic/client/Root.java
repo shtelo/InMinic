@@ -1,8 +1,7 @@
 package prj.shtelo.inminic.client;
 
 import prj.shtelo.inminic.client.root.Display;
-import prj.shtelo.inminic.client.root.Text;
-import prj.shtelo.inminic.client.rootobject.Image;
+import prj.shtelo.inminic.client.rootobject.Character;
 import prj.shtelo.inminic.client.rootobject.RootObject;
 
 import java.awt.*;
@@ -10,45 +9,50 @@ import java.awt.image.BufferStrategy;
 
 public class Root implements Runnable {
     private String title;
-    private int width, height;
+    private int width, height, fps;
 
     private Display display;
     private Thread thread;
 
     private boolean running;
 
-    private Graphics graphics;
-    private BufferStrategy bufferStrategy;
+    private KeyManager keyManager;
 
-    public Root(String title, int width, int height) {
+    public Root(String title, int width, int height, int fps) {
         this.title = title;
         this.width = width;
         this.height = height;
+        this.fps = fps;
 
         init();
     }
 
     private void init() {
-        display = new Display(title, width, height);
+        keyManager = new KeyManager();
+
+        display = new Display(title, width, height, fps, this);
         thread = new Thread(this);
+
+        RootObject.add(new Character(100, 100, "sch_0q0", this));
     }
 
     private void tick() {
+        keyManager.tick();
         for (RootObject rootObject : RootObject.objects) {
             rootObject.tick();
         }
     }
 
     private void render() {
-        bufferStrategy = display.getCanvas().getBufferStrategy();
+        BufferStrategy bufferStrategy = display.getCanvas().getBufferStrategy();
         if (bufferStrategy == null) {
             display.getCanvas().createBufferStrategy(3);
             return;
         }
-        graphics = bufferStrategy.getDrawGraphics();
+        Graphics graphics = bufferStrategy.getDrawGraphics();
 
         graphics.setColor(Color.background);
-        graphics.fillRect(0, 0, width, height);
+        graphics.fillRect(0, 0, display.getWidth(), display.getHeight());
 
         for (RootObject rootObject : RootObject.objects) {
             rootObject.render(graphics);
@@ -60,9 +64,21 @@ public class Root implements Runnable {
 
     @Override
     public void run() {
+        double timePerLoop = 1000000000. / display.getFps();
+        double delta = 0;
+        long now;
+        long pnow = System.nanoTime();
+
         while (running) {
-            tick();
-            render();
+            now = System.nanoTime();
+            delta += (now - pnow) / timePerLoop;
+            pnow = now;
+
+            if (delta >= 1) {
+                delta--;
+                tick();
+                render();
+            }
         }
 
         stop();
@@ -84,5 +100,9 @@ public class Root implements Runnable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public KeyManager getKeyManager() {
+        return keyManager;
     }
 }
