@@ -64,15 +64,15 @@ public class Character extends RootObject {
 
     @Override
     public void tick() {
-        if (root.getKeyManager().getMove()[1]) {
+        if (root.getKeyManager().getMove()[0]) {
             x -= offset;
             watchingRight = false;
-        } if (root.getKeyManager().getMove()[3]) {
+        } if (root.getKeyManager().getMove()[1]) {
             x += offset;
             watchingRight = true;
         }
 
-        boolean moving = root.getKeyManager().getMove()[1] || root.getKeyManager().getMove()[3];
+        boolean moving = root.getKeyManager().getMove()[0] || root.getKeyManager().getMove()[1];
         if (moving) {
             delay++;
 

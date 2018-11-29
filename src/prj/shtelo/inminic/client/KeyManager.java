@@ -5,13 +5,11 @@ import java.awt.event.KeyListener;
 
 public class KeyManager implements KeyListener {
     private boolean[] keys = new boolean[256];
-    private boolean[] move = new boolean[4];
+    private boolean[] move = new boolean[2];
 
     void tick() {
-        move[0] = keys[KeyEvent.VK_W];
-        move[1] = keys[KeyEvent.VK_A];
-        move[2] = keys[KeyEvent.VK_S];
-        move[3] = keys[KeyEvent.VK_D];
+        move[0] = keys[KeyEvent.VK_A];
+        move[1] = keys[KeyEvent.VK_D];
     }
 
     @Override
