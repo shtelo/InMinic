@@ -31,7 +31,7 @@ public class Root implements Runnable {
 
     private void init() {
         keyManager = new KeyManager();
-        camera = new Camera(0, 0, 3);
+        camera = new Camera(0, 0, 1.5);
 
         display = new Display(title, width, height, fps, this);
         thread = new Thread(this);

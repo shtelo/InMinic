@@ -21,12 +21,16 @@ public class KeyManager implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        keys[e.getKeyCode()] = true;
+        try {
+            keys[e.getKeyCode()] = true;
+        } catch (ArrayIndexOutOfBoundsException ignored) {}
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        keys[e.getKeyCode()] = false;
+        try {
+            keys[e.getKeyCode()] = false;
+        } catch (ArrayIndexOutOfBoundsException ignored) {}
     }
 
     public boolean[] getMove() {
