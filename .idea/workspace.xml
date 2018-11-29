@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="878d1840-23b7-4ed0-afb7-b30418b5860f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/res/character/character.psd" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/res/character/sch_0q0.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/prj/shtelo/inminic/client/KeyManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/prj/shtelo/inminic/client/rootobject/Character.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/prj/shtelo/inminic/client/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/prj/shtelo/inminic/client/Main.java" afterDir="false" />
+    <list default="true" id="878d1840-23b7-4ed0-afb7-b30418b5860f" name="Default Changelist" comment="카메라 추가">
+      <change afterPath="$PROJECT_DIR$/src/prj/shtelo/inminic/client/cameraobject/Camera.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prj/shtelo/inminic/client/cameraobject/Map.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prj/shtelo/inminic/client/Color.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/prj/shtelo/inminic/client/Color.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/prj/shtelo/inminic/client/Root.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/prj/shtelo/inminic/client/Root.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/prj/shtelo/inminic/client/root/Display.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/prj/shtelo/inminic/client/root/Display.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prj/shtelo/inminic/client/rootobject/Character.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/prj/shtelo/inminic/client/cameraobject/Character.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -23,11 +22,12 @@
     <session id="988936123">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="2" />
+          <entry key="project.closed" value="3" />
           <entry key="project.open.time.3" value="1" />
           <entry key="project.open.time.4" value="1" />
           <entry key="project.open.time.6" value="1" />
-          <entry key="project.opened" value="3" />
+          <entry key="project.open.time.7" value="1" />
+          <entry key="project.opened" value="4" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -35,7 +35,7 @@
           <entry key="class" value="1" />
           <entry key="gitignore" value="2" />
           <entry key="iml" value="4" />
-          <entry key="java" value="37" />
+          <entry key="java" value="49" />
           <entry key="png" value="4" />
           <entry key="psd" value="2" />
         </counts>
@@ -46,82 +46,35 @@
           <entry key="CLASS" value="1" />
           <entry key="IDEA_MODULE" value="4" />
           <entry key="Image" value="4" />
-          <entry key="JAVA" value="37" />
+          <entry key="JAVA" value="49" />
           <entry key="PLAIN_TEXT" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="gitignore" value="69" />
-          <entry key="java" value="13292" />
-          <entry key="txt" value="84" />
+          <entry key="java" value="14163" />
+          <entry key="txt" value="95" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="13292" />
-          <entry key="PLAIN_TEXT" value="153" />
+          <entry key="JAVA" value="14163" />
+          <entry key="PLAIN_TEXT" value="164" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/prj/shtelo/inminic/client/Root.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1176">
-              <caret line="66" column="60" lean-forward="true" selection-start-line="66" selection-start-column="60" selection-end-line="66" selection-end-column="60" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#2075#2076#0" expanded="true" />
-                <element signature="e#2108#2109#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/prj/shtelo/inminic/client/root/Display.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2223">
-              <caret line="95" column="25" selection-start-line="95" selection-start-column="25" selection-end-line="95" selection-end-column="25" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#2535#2536#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/prj/shtelo/inminic/client/rootobject/Character.java">
+        <entry file="file://$PROJECT_DIR$/src/prj/shtelo/inminic/client/cameraobject/Camera.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="429">
-              <caret line="57" column="59" lean-forward="true" selection-start-line="57" selection-start-column="59" selection-end-line="57" selection-end-column="59" />
+            <state relative-caret-position="221">
+              <caret line="15" column="4" lean-forward="true" selection-start-line="15" selection-start-column="4" selection-end-line="15" selection-end-column="4" />
               <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#1911#1912#0" expanded="true" />
-                <element signature="e#1974#1975#0" expanded="true" />
-                <element signature="e#2046#2047#0" expanded="true" />
-                <element signature="e#2098#2099#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/prj/shtelo/inminic/client/KeyManager.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="813">
-              <caret line="31" column="32" selection-start-line="31" selection-start-column="32" selection-end-line="31" selection-end-column="32" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#447#448#0" expanded="true" />
-                <element signature="e#490#491#0" expanded="true" />
-                <element signature="e#547#548#0" expanded="true" />
-                <element signature="e#591#592#0" expanded="true" />
-                <element signature="e#746#747#0" expanded="true" />
+                <element signature="e#361#362#0" expanded="true" />
+                <element signature="e#388#389#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -162,14 +115,19 @@
         <option value="$PROJECT_DIR$/src/prj/shtelo/inminic/client/root/Text.java" />
         <option value="$PROJECT_DIR$/src/prj/shtelo/inminic/client/root/Image.java" />
         <option value="$PROJECT_DIR$/src/prj/shtelo/inminic/client/rootobject/Image.java" />
-        <option value="$PROJECT_DIR$/src/prj/shtelo/inminic/client/Color.java" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/src/prj/shtelo/inminic/client/root/Character.java" />
         <option value="$PROJECT_DIR$/src/prj/shtelo/inminic/client/KeyManager.java" />
         <option value="$PROJECT_DIR$/src/prj/shtelo/inminic/client/root/Display.java" />
         <option value="$PROJECT_DIR$/src/prj/shtelo/inminic/client/Main.java" />
-        <option value="$PROJECT_DIR$/src/prj/shtelo/inminic/client/Root.java" />
+        <option value="$PROJECT_DIR$/src/prj/shtelo/inminic/client/rootobject/Background.java" />
+        <option value="$PROJECT_DIR$/src/prj/shtelo/inminic/client/rootobject/Camera.java" />
+        <option value="$PROJECT_DIR$/src/prj/shtelo/inminic/client/rootobject/Map.java" />
+        <option value="$PROJECT_DIR$/src/prj/shtelo/inminic/client/Camera.java" />
         <option value="$PROJECT_DIR$/src/prj/shtelo/inminic/client/rootobject/Character.java" />
+        <option value="$PROJECT_DIR$/src/prj/shtelo/inminic/client/Root.java" />
+        <option value="$PROJECT_DIR$/src/prj/shtelo/inminic/client/Color.java" />
+        <option value="$PROJECT_DIR$/src/prj/shtelo/inminic/client/cameraobject/Camera.java" />
       </list>
     </option>
   </component>
@@ -187,7 +145,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -242,6 +199,14 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="inminic" type="462c0819:PsiDirectoryNode" />
               <item name="client" type="462c0819:PsiDirectoryNode" />
+              <item name="cameraobject" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="InMinic" type="b2602c69:ProjectViewProjectNode" />
+              <item name="InMinic" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="inminic" type="462c0819:PsiDirectoryNode" />
+              <item name="client" type="462c0819:PsiDirectoryNode" />
               <item name="root" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -256,11 +221,12 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
       <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1543497837327" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1543499464870" />
     <property name="jdk.selected.JAVA_MODULE" value="1.8" />
     <property name="last_opened_file_path" value="C:/Program Files/Git/bin/git.exe" />
     <property name="project.structure.last.edited" value="Modules" />
@@ -269,6 +235,9 @@
     <property name="settings.editor.selected.configurable" value="preferences.keymap" />
   </component>
   <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="prj.shtelo.inminic.client.rootobject" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="H:\Programing\InMinic\res\character" />
       <recent name="H:\Programing\InMinic\res\image" />
@@ -293,7 +262,7 @@
       <module name="inMinic" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="prj.shtelo.inminic.client.*" />
+          <option name="PATTERN" value="prj.shtelo.inminic.client.cameraobject.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -339,7 +308,7 @@
     <frame x="-8" y="-8" width="2576" height="1416" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.10572337" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.10651828" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -348,7 +317,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32943013" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.17642467" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.17642467" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -356,7 +325,7 @@
       <window_info anchor="bottom" id="Terminal" order="7" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="9" weight="0.32240438" />
-      <window_info anchor="bottom" id="Messages" order="10" weight="0.32943013" />
+      <window_info active="true" anchor="bottom" id="Messages" order="10" visible="true" weight="0.32943013" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -399,7 +368,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="기본 JFrame 틀 구축" />
     <MESSAGE value="윈도우 사이즈 수정" />
-    <option name="LAST_COMMIT_MESSAGE" value="윈도우 사이즈 수정" />
+    <MESSAGE value="카메라 추가" />
+    <option name="LAST_COMMIT_MESSAGE" value="카메라 추가" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/out/production/inMinic/prj/shtelo/inminic/client/Main.class">
@@ -452,13 +422,6 @@
     <entry file="file://$PROJECT_DIR$/res/image/a.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/prj/shtelo/inminic/client/Color.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/inMinic.iml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
@@ -473,9 +436,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/character/캐.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/res/character/캐.png" />
     <entry file="file://$PROJECT_DIR$/res/character/sch_0q0.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
@@ -492,31 +453,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/prj/shtelo/inminic/client/KeyManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="813">
-          <caret line="31" column="32" selection-start-line="31" selection-start-column="32" selection-end-line="31" selection-end-column="32" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#447#448#0" expanded="true" />
-            <element signature="e#490#491#0" expanded="true" />
-            <element signature="e#547#548#0" expanded="true" />
-            <element signature="e#591#592#0" expanded="true" />
-            <element signature="e#746#747#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/prj/shtelo/inminic/client/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="4" column="53" selection-start-line="4" selection-start-column="53" selection-end-line="4" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/prj/shtelo/inminic/client/root/Display.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2223">
+        <state relative-caret-position="1197">
           <caret line="95" column="25" selection-start-line="95" selection-start-column="25" selection-end-line="95" selection-end-column="25" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -525,28 +464,65 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/prj/shtelo/inminic/client/Root.java">
+    <entry file="file://$PROJECT_DIR$/src/prj/shtelo/inminic/client/KeyManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1176">
-          <caret line="66" column="60" lean-forward="true" selection-start-line="66" selection-start-column="60" selection-end-line="66" selection-end-column="60" />
+        <state relative-caret-position="459">
+          <caret line="31" column="32" selection-start-line="31" selection-start-column="32" selection-end-line="31" selection-end-column="32" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2075#2076#0" expanded="true" />
-            <element signature="e#2108#2109#0" expanded="true" />
+            <element signature="e#746#747#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/prj/shtelo/inminic/client/rootobject/Character.java">
+    <entry file="file://$PROJECT_DIR$/src/prj/shtelo/inminic/client/cameraobject/Map.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="429">
-          <caret line="57" column="59" lean-forward="true" selection-start-line="57" selection-start-column="59" selection-end-line="57" selection-end-column="59" />
+        <state relative-caret-position="68">
+          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/prj/shtelo/inminic/client/cameraobject/Character.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1911#1912#0" expanded="true" />
-            <element signature="e#1974#1975#0" expanded="true" />
-            <element signature="e#2046#2047#0" expanded="true" />
-            <element signature="e#2098#2099#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/prj/shtelo/inminic/client/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" lean-forward="true" selection-start-line="8" selection-end-line="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/prj/shtelo/inminic/client/Color.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="38">
+          <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/prj/shtelo/inminic/client/Root.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="550">
+          <caret line="33" column="35" selection-start-line="33" selection-start-column="35" selection-end-line="33" selection-end-column="35" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/prj/shtelo/inminic/client/cameraobject/Camera.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="15" column="4" lean-forward="true" selection-start-line="15" selection-start-column="4" selection-end-line="15" selection-end-column="4" />
+          <folding>
+            <element signature="e#361#362#0" expanded="true" />
+            <element signature="e#388#389#0" expanded="true" />
           </folding>
         </state>
       </provider>

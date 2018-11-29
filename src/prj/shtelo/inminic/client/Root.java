@@ -1,7 +1,8 @@
 package prj.shtelo.inminic.client;
 
+import prj.shtelo.inminic.client.cameraobject.Camera;
 import prj.shtelo.inminic.client.root.Display;
-import prj.shtelo.inminic.client.rootobject.Character;
+import prj.shtelo.inminic.client.cameraobject.Character;
 import prj.shtelo.inminic.client.rootobject.RootObject;
 
 import java.awt.*;
@@ -17,6 +18,7 @@ public class Root implements Runnable {
     private boolean running;
 
     private KeyManager keyManager;
+    private Camera camera;
 
     public Root(String title, int width, int height, int fps) {
         this.title = title;
@@ -29,11 +31,12 @@ public class Root implements Runnable {
 
     private void init() {
         keyManager = new KeyManager();
+        camera = new Camera(0, 0, 3);
 
         display = new Display(title, width, height, fps, this);
         thread = new Thread(this);
 
-        RootObject.add(new Character(100, 100, "sch_0q0", this));
+        RootObject.add(new Character(0, 0, "sch_0q0", camera, this));
     }
 
     private void tick() {
@@ -104,5 +107,9 @@ public class Root implements Runnable {
 
     public KeyManager getKeyManager() {
         return keyManager;
+    }
+
+    public Display getDisplay() {
+        return display;
     }
 }

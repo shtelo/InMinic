@@ -1,6 +1,7 @@
-package prj.shtelo.inminic.client.rootobject;
+package prj.shtelo.inminic.client.cameraobject;
 
 import prj.shtelo.inminic.client.Root;
+import prj.shtelo.inminic.client.rootobject.RootObject;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -10,9 +11,11 @@ import java.io.IOException;
 
 public class Character extends RootObject {
     private int hitboxX = 4, hitboxY = 16, hitboxWidth = 24, hitBoxHeight = 48;
+    private int width = 32, height = 64;
 
     private int x, y;
     private String name;
+    private Camera camera;
     private Root root;
 
     private double offset = 5;
@@ -21,10 +24,11 @@ public class Character extends RootObject {
 
     private int nowMode = 0;
 
-    public Character(int x, int y, String name, Root root) {
+    public Character(int x, int y, String name, Camera camera, Root root) {
         this.x = x;
         this.y = y;
         this.name = name;
+        this.camera = camera;
         this.root = root;
 
         init();
@@ -60,7 +64,7 @@ public class Character extends RootObject {
 
     @Override
     public void render(Graphics graphics) {
-        graphics.drawImage(images[nowMode], x, y, null);
+        graphics.drawImage(images[nowMode], (int) ((x - camera.getX()) * camera.getZoom() + root.getDisplay().getWidth() / 2), (int) ((y - camera.getY()) * camera.getZoom() + root.getDisplay().getHeight() / 2), (int) (width * camera.getZoom()), (int) (height * camera.getZoom()), null);
     }
 
     private BufferedImage cropImage(BufferedImage src, int x, int y) {
