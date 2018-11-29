@@ -20,7 +20,7 @@ public class Root implements Runnable {
     private KeyManager keyManager;
     private Camera camera;
 
-    public Root(String title, int width, int height, int fps) {
+    Root(String title, int width, int height, int fps) {
         this.title = title;
         this.width = width;
         this.height = height;
@@ -87,7 +87,7 @@ public class Root implements Runnable {
         stop();
     }
 
-    public void start() {
+    void start() {
         if (running)
             return;
         running = true;
