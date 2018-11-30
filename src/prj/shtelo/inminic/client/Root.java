@@ -3,6 +3,7 @@ package prj.shtelo.inminic.client;
 import prj.shtelo.inminic.client.cameraobject.Camera;
 import prj.shtelo.inminic.client.root.Display;
 import prj.shtelo.inminic.client.cameraobject.Character;
+import prj.shtelo.inminic.client.rootobject.HUD;
 import prj.shtelo.inminic.client.rootobject.RootObject;
 
 import java.awt.*;
@@ -14,11 +15,13 @@ public class Root implements Runnable {
 
     private Display display;
     private Thread thread;
+    private HUD hud;
 
     private boolean running;
 
     private KeyManager keyManager;
     private Camera camera;
+    private Character character;
 
     Root(String title, int width, int height, int fps) {
         this.title = title;
@@ -31,19 +34,23 @@ public class Root implements Runnable {
 
     private void init() {
         keyManager = new KeyManager();
-        camera = new Camera(0, 0, 2);
+        camera = new Camera(0, 0, 2, this);
+        hud = new HUD(new TextFormat(".\\res\\font\\D2Coding.ttc", 20, Color.text), camera, this);
 
         display = new Display(title, width, height, fps, this);
         thread = new Thread(this);
 
-        RootObject.add(new Character(0, 0, "sch_0q0", camera, this));
+        character = new Character(0, 0, "sch_0q0", camera, this);
+        RootObject.add(character);
     }
 
     private void tick() {
         keyManager.tick();
+        camera.tick();
         for (RootObject rootObject : RootObject.objects) {
             rootObject.tick();
         }
+        hud.tick();
     }
 
     private void render() {
@@ -60,6 +67,8 @@ public class Root implements Runnable {
         for (RootObject rootObject : RootObject.objects) {
             rootObject.render(graphics);
         }
+
+        hud.render(graphics);
 
         bufferStrategy.show();
         graphics.dispose();
@@ -111,5 +120,9 @@ public class Root implements Runnable {
 
     public Display getDisplay() {
         return display;
+    }
+
+    public Character getCharacter() {
+        return character;
     }
 }

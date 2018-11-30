@@ -13,7 +13,7 @@ public class Character extends RootObject {
     private int hitboxX = 4, hitboxY = 16, hitboxWidth = 24, hitBoxHeight = 48;
     private int width = 32, height = 64;
 
-    private int x, y;
+    private double x, y;
     private String name;
     private Camera camera;
     private Root root;
@@ -25,7 +25,7 @@ public class Character extends RootObject {
     private int maxDelay, delay;
     private boolean watchingRight;
 
-    public Character(int x, int y, String name, Camera camera, Root root) {
+    public Character(double x, double y, String name, Camera camera, Root root) {
         this.x = x;
         this.y = y;
         this.name = name;
@@ -56,7 +56,7 @@ public class Character extends RootObject {
         images[6] = cropImage(image, 64, 64);
         images[7] = cropImage(image, 96, 64);
 
-        offset = root.getDisplay().getFps() / 12.;
+        offset = 60. / root.getDisplay().getFps();
         maxDelay = root.getDisplay().getFps() / 8;
         delay = 0;
         watchingRight = true;
@@ -94,10 +94,10 @@ public class Character extends RootObject {
     @Override
     public void render(Graphics graphics) {
         BufferedImage image = images[nowMode];
-        int x = (int) ((this.x - camera.getX()) * camera.getZoom() + root.getDisplay().getWidth() / 2);
-        int y = (int) ((this.y - camera.getY()) * camera.getZoom() + root.getDisplay().getHeight() / 2);
         int width = (int) (this.width * camera.getZoom());
         int height = (int) (this.height * camera.getZoom());
+        int x = (int) ((this.x - camera.getX()) * camera.getZoom() + (root.getDisplay().getWidth() - width) / 2);
+        int y = (int) ((this.y - camera.getY()) * camera.getZoom() + (root.getDisplay().getHeight() - height) / 2);
 
         if (watchingRight)
             graphics.drawImage(image, x, y, width, height, null);
@@ -107,5 +107,13 @@ public class Character extends RootObject {
 
     private BufferedImage cropImage(BufferedImage src, int x, int y) {
         return src.getSubimage(x, y, 32, 64);
+    }
+
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
     }
 }
