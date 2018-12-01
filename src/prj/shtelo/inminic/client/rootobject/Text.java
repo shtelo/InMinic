@@ -1,7 +1,6 @@
-package prj.shtelo.inminic.client.root;
+package prj.shtelo.inminic.client.rootobject;
 
-import prj.shtelo.inminic.client.TextFormat;
-import prj.shtelo.inminic.client.rootobject.RootObject;
+import prj.shtelo.inminic.client.root.TextFormat;
 
 import java.awt.*;
 

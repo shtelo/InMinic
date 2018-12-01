@@ -1,8 +1,12 @@
 package prj.shtelo.inminic.client;
 
 import prj.shtelo.inminic.client.cameraobject.Camera;
-import prj.shtelo.inminic.client.root.Display;
 import prj.shtelo.inminic.client.cameraobject.Character;
+import prj.shtelo.inminic.client.cameraobject.Map;
+import prj.shtelo.inminic.client.root.Color;
+import prj.shtelo.inminic.client.root.Display;
+import prj.shtelo.inminic.client.root.KeyManager;
+import prj.shtelo.inminic.client.root.TextFormat;
 import prj.shtelo.inminic.client.rootobject.HUD;
 import prj.shtelo.inminic.client.rootobject.RootObject;
 
@@ -35,12 +39,14 @@ public class Root implements Runnable {
     private void init() {
         keyManager = new KeyManager();
         camera = new Camera(0, 0, 2, this);
-        hud = new HUD(new TextFormat(".\\res\\font\\D2Coding.ttc", 20, Color.text), camera, this);
+        hud = new HUD(new TextFormat(".\\res\\font\\D2Coding.ttc", 15, Color.text), camera, this);
 
         display = new Display(title, width, height, fps, this);
         thread = new Thread(this);
 
-        character = new Character(0, 0, "sch_0q0", camera, this);
+        RootObject.add(new Map("test001", camera, this));
+
+        character = new Character(11, 0, "sch_0q0", camera, this);
         RootObject.add(character);
     }
 

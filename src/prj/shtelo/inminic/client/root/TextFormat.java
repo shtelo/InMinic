@@ -1,4 +1,4 @@
-package prj.shtelo.inminic.client;
+package prj.shtelo.inminic.client.root;
 
 import java.awt.*;
 import java.io.File;
@@ -11,7 +11,7 @@ public class TextFormat {
 
     private Font font;
 
-    TextFormat(String path, float size, java.awt.Color color) {
+    public TextFormat(String path, float size, java.awt.Color color) {
         this.path = path;
         this.size = size;
         this.color = color;

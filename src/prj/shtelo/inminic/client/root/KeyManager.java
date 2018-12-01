@@ -1,4 +1,4 @@
-package prj.shtelo.inminic.client;
+package prj.shtelo.inminic.client.root;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -12,7 +12,7 @@ public class KeyManager implements KeyListener {
     private boolean jump = false;
     private boolean zoomUp = false, zoomDown = false;
 
-    void tick() {
+    public void tick() {
         move[0] = keys[KeyEvent.VK_A];
         move[1] = keys[KeyEvent.VK_D];
 
