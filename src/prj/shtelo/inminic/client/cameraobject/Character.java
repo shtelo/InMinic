@@ -106,7 +106,7 @@ public class Character extends RootObject {
 
     private void gravityAction() {
         if (getDeltaY() > 0) {
-            velocity += 9.8 / root.getDisplay().getDisplayFps();
+            velocity += 1411.2 / root.getDisplay().getDisplayFps() / root.getDisplay().getDisplayFps();
             if (velocity > getDeltaY()) {
                 velocity = getDeltaY();
             }
