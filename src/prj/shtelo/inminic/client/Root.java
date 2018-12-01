@@ -18,6 +18,7 @@ import java.io.IOException;
 public class Root implements Runnable {
     private String title;
     private int width, height, fps;
+    private String name;
     private String host;
     private int port;
 
@@ -34,11 +35,12 @@ public class Root implements Runnable {
     private Character character;
     private Map map;
 
-    Root(String title, int width, int height, int fps, String host, int port) throws IOException {
+    Root(String title, int width, int height, int fps, String name, String host, int port) throws IOException {
         this.title = title;
         this.width = width;
         this.height = height;
         this.fps = fps;
+        this.name = name;
         this.host = host;
         this.port = port;
 
@@ -56,7 +58,7 @@ public class Root implements Runnable {
         thread = new Thread(this);
 
         map = new Map(client.getMapName(), camera, this);
-        character = new Character(11, -100, "sch_0q0", camera, map, this);
+        character = new Character(11, -100, name, camera, map, this);
     }
 
     private void tick() {
