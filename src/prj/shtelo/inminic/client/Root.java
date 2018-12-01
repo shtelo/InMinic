@@ -82,10 +82,10 @@ public class Root implements Runnable {
 
     @Override
     public void run() {
-        double timePerLoop = 1000000000. / display.getFps();
+        double timePerLoop = 1_000_000_000. / display.getDisplayFps();
         double delta = 0;
-        long now;
-        long pnow = System.nanoTime();
+        long now, pnow = System.nanoTime();
+        long loop = System.nanoTime(), ploop;
 
         while (running) {
             now = System.nanoTime();
@@ -94,6 +94,12 @@ public class Root implements Runnable {
 
             if (delta >= 1) {
                 delta--;
+
+                ploop = loop;
+                loop = System.nanoTime();
+
+                display.setDisplayFps(1. / (loop - ploop) * 1_000_000_000);
+
                 tick();
                 render();
             }

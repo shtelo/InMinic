@@ -20,9 +20,8 @@ public class Character extends RootObject {
 
     private BufferedImage[] images;
 
-    private double offset;
     private int nowMode = 0;
-    private int maxDelay, delay;
+    private int delay;
     private boolean watchingRight;
 
     public Character(double x, double y, String name, Camera camera, Root root) {
@@ -56,14 +55,15 @@ public class Character extends RootObject {
         images[6] = cropImage(image, 64, 64);
         images[7] = cropImage(image, 96, 64);
 
-        offset = 60. / root.getDisplay().getFps();
-        maxDelay = root.getDisplay().getFps() / 8;
         delay = 0;
         watchingRight = true;
     }
 
     @Override
     public void tick() {
+        double offset = 60. / root.getDisplay().getDisplayFps();
+        int maxDelay = (int) (root.getDisplay().getDisplayFps() / 8);
+
         if (root.getKeyManager().getMove()[0]) {
             x -= offset;
             watchingRight = false;

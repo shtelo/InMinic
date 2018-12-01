@@ -8,9 +8,13 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
 public class Display {
+    private final static double motionSpeed = 10;
+
     private String title;
     private int width, height, fps;
     private Root root;
+
+    private double displayFps;
 
     private Dimension size;
     private JFrame frame;
@@ -24,6 +28,8 @@ public class Display {
         this.height = height;
         this.fps = fps;
         this.root = root;
+
+        this.displayFps = fps;
 
         init();
     }
@@ -95,5 +101,17 @@ public class Display {
 
     public int getFps() {
         return fps;
+    }
+
+    public double getDisplayFps() {
+        return displayFps;
+    }
+
+    public static double getMotionSpeed() {
+        return motionSpeed;
+    }
+
+    public void setDisplayFps(double displayFps) {
+        this.displayFps = displayFps;
     }
 }
