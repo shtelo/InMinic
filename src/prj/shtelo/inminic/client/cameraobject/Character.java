@@ -1,6 +1,8 @@
 package prj.shtelo.inminic.client.cameraobject;
 
 import prj.shtelo.inminic.client.Root;
+import prj.shtelo.inminic.client.root.Color;
+import prj.shtelo.inminic.client.root.TextFormat;
 import prj.shtelo.inminic.client.rootobject.RootObject;
 
 import javax.imageio.ImageIO;
@@ -12,6 +14,7 @@ import java.io.IOException;
 
 public class Character extends RootObject {
     private final static int collisionBoxX = 4, collisionBoxY = 16, collisionBoxWidth = 24, collisionBoxHeight = 48;
+    private final TextFormat TEXT_FORMAT = new TextFormat(".\\res\\font\\D2Coding.ttc", 18, Color.text);
     private int width = 32, height = 64;
 
     private double collisionBoxStartX;
@@ -25,7 +28,7 @@ public class Character extends RootObject {
 
     private BufferedImage[] images;
 
-    private int nowMode = 0;
+    private int form = 0;
     private int delay;
     private boolean watchingRight;
 
@@ -87,21 +90,25 @@ public class Character extends RootObject {
         if (moving) {
             delay++;
 
-            if (nowMode == 0) nowMode = 4;
+            if (form == 0) form = 4;
 
             if (delay >= maxDelay) {
-                if (nowMode == 4) nowMode = 5;
-                else if (nowMode == 5) nowMode = 6;
-                else if (nowMode == 6) nowMode = 7;
-                else nowMode = 4;
+                if (form == 4) form = 5;
+                else if (form == 5) form = 6;
+                else if (form == 6) form = 7;
+                else form = 4;
                 delay -= maxDelay;
             }
         } else {
             delay = 0;
-            nowMode = 0;
+            form = 0;
         }
 
-        gravityAction();
+        try {
+            gravityAction();
+        } catch (NullPointerException ignored) {}
+
+        root.getClient().send("move\t" + x + "\t" + y);
     }
 
     private void gravityAction() {
@@ -138,7 +145,7 @@ public class Character extends RootObject {
 
     @Override
     public void render(Graphics graphics) {
-        BufferedImage image = images[nowMode];
+        BufferedImage image = images[form];
         int width = (int) (this.width * camera.getZoom());
         int height = (int) (this.height * camera.getZoom());
         int x = (int) ((this.x - camera.getX()) * camera.getZoom() + (root.getDisplay().getWidth() - width) / 2);
@@ -148,6 +155,8 @@ public class Character extends RootObject {
             graphics.drawImage(image, x, y, width, height, null);
         else
             graphics.drawImage(image, x + width, y, -width, height, null);
+        graphics.setFont(TEXT_FORMAT.getFont());
+        graphics.drawString(name, (width - graphics.getFontMetrics().stringWidth(name)) / 2 + x, (int) (y - TEXT_FORMAT.getSize()));
     }
 
     private BufferedImage cropImage(BufferedImage src, int x, int y) {

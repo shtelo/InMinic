@@ -14,11 +14,7 @@ public abstract class RootObject {
         objects.remove(this);
     }
 
-    public void tick() {
+    public void tick() {}
 
-    }
-
-    public void render(Graphics graphics) {
-
-    }
+    public void render(Graphics graphics) {}
 }
