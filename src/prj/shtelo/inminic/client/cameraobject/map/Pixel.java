@@ -2,7 +2,7 @@ package prj.shtelo.inminic.client.cameraobject.map;
 
 import java.awt.*;
 
-class Pixel {
+public class Pixel {
     private Color color;
     private boolean collision;
 
@@ -13,6 +13,10 @@ class Pixel {
 
     Color getColor() {
         return color;
+    }
+
+    public boolean isCollide() {
+        return collision;
     }
 
     @Override

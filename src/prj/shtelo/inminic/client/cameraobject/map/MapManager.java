@@ -85,6 +85,10 @@ public class MapManager {
         return pixels[y][x].getColor();
     }
 
+    public Pixel[][] getPixels() {
+        return pixels;
+    }
+
     public void setName(String name) {
         this.name = name;
     }

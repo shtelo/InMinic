@@ -5,17 +5,22 @@ import prj.shtelo.inminic.client.rootobject.RootObject;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 public class Character extends RootObject {
-    private int hitboxX = 4, hitboxY = 16, hitboxWidth = 24, hitBoxHeight = 48;
+    private final static int collisionBoxX = 4, collisionBoxY = 16, collisionBoxWidth = 24, collisionBoxHeight = 48;
     private int width = 32, height = 64;
+
+    private double collisionBoxStartX;
+    private double collisionBoxStartY;
 
     private double x, y;
     private String name;
     private Camera camera;
+    private Map map;
     private Root root;
 
     private BufferedImage[] images;
@@ -24,11 +29,14 @@ public class Character extends RootObject {
     private int delay;
     private boolean watchingRight;
 
-    public Character(double x, double y, String name, Camera camera, Root root) {
+    private double velocity;
+
+    public Character(double x, double y, String name, Camera camera, Map map, Root root) {
         this.x = x;
         this.y = y;
         this.name = name;
         this.camera = camera;
+        this.map = map;
         this.root = root;
 
         init();
@@ -61,6 +69,9 @@ public class Character extends RootObject {
 
     @Override
     public void tick() {
+         collisionBoxStartX = x - width / 2. + collisionBoxX;
+         collisionBoxStartY = y - height / 2. + collisionBoxY;
+
         double offset = 60. / root.getDisplay().getDisplayFps();
         int maxDelay = (int) (root.getDisplay().getDisplayFps() / 8);
 
@@ -89,6 +100,40 @@ public class Character extends RootObject {
             delay = 0;
             nowMode = 0;
         }
+
+        gravityAction();
+    }
+
+    private void gravityAction() {
+        if (getDeltaY() > 0) {
+            velocity += 9.8 / root.getDisplay().getDisplayFps();
+            if (velocity > getDeltaY()) {
+                velocity = getDeltaY();
+            }
+        } else {
+            velocity = 0;
+        }
+
+        if (root.getKeyManager().getKeys()[KeyEvent.VK_SPACE] && getDeltaY() == 0) {
+            velocity -= 300 / root.getDisplay().getDisplayFps();
+        }
+
+        y = y + velocity;
+    }
+
+    private int getDeltaY() {
+        int offsetY = 0;
+        for (int y = (int) (collisionBoxStartY + collisionBoxHeight); y + offsetY < map.getMapManager().getHeight(); offsetY++) {
+            for (int x = (int) collisionBoxStartX; x < collisionBoxStartX + collisionBoxWidth; x++) {
+                if (x < 0 || x >= map.getMapManager().getWidth() || y + offsetY < 0 || y + offsetY >= map.getMapManager().getHeight()) {
+                    continue;
+                }
+                if (map.getMapManager().getPixels()[y + offsetY][x].isCollide()) {
+                    return offsetY;
+                }
+            }
+        }
+        return Integer.MAX_VALUE;
     }
 
     @Override

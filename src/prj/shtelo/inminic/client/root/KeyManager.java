@@ -9,7 +9,6 @@ public class KeyManager implements KeyListener {
     private boolean[] keys = new boolean[count], lastKeys = new boolean[count];
     private boolean[] move = new boolean[2];
 
-    private boolean jump = false;
     private boolean zoomUp = false, zoomDown = false;
 
     public void tick() {
@@ -18,7 +17,6 @@ public class KeyManager implements KeyListener {
 
         boolean[] previousKeys = lastKeys.clone();
 
-        jump = !previousKeys[KeyEvent.VK_SPACE] && keys[KeyEvent.VK_SPACE];
         zoomDown = !previousKeys[KeyEvent.VK_OPEN_BRACKET] && keys[KeyEvent.VK_OPEN_BRACKET];
         zoomUp = !previousKeys[KeyEvent.VK_CLOSE_BRACKET] && keys[KeyEvent.VK_CLOSE_BRACKET];
 
@@ -46,8 +44,8 @@ public class KeyManager implements KeyListener {
         return move;
     }
 
-    boolean isJump() {
-        return jump;
+    public boolean[] getKeys() {
+        return keys;
     }
 
     public boolean isZoomUp() {

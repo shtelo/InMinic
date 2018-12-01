@@ -44,9 +44,10 @@ public class Root implements Runnable {
         display = new Display(title, width, height, fps, this);
         thread = new Thread(this);
 
-        RootObject.add(new Map("test001", camera, this));
+        Map map = new Map("test001", camera, this);
+        RootObject.add(map);
 
-        character = new Character(11, 0, "sch_0q0", camera, this);
+        character = new Character(11, -100, "sch_0q0", camera, map, this);
         RootObject.add(character);
     }
 
