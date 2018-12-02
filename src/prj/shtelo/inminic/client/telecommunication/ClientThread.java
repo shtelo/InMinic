@@ -7,6 +7,7 @@ import prj.shtelo.inminic.client.rootobject.RootObject;
 import javax.swing.*;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 class ClientThread extends Thread {
@@ -57,7 +58,13 @@ class ClientThread extends Thread {
         String message;
         String[] messages;
         while (client.isConnected()) {
-            message = scanner.nextLine();
+            try {
+                message = scanner.nextLine();
+            } catch (NoSuchElementException e) {
+                JOptionPane.showMessageDialog(null, "서버가 종료되었습니다.", "InMinic Information", JOptionPane.INFORMATION_MESSAGE);
+                System.exit(0);
+                return;
+            }
             messages = message.split("\t");
 
             System.out.println("RECV " + message);
