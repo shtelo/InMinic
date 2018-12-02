@@ -32,7 +32,8 @@ public class Client {
             socket = new Socket(host, port);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "서버에 연결할 수 없습니다!", "InMinic Error", JOptionPane.ERROR_MESSAGE);
-            throw new IOException();
+            System.exit(0);
+            return;
         }
         connected = true;
 
@@ -43,6 +44,7 @@ public class Client {
     }
 
     public void send(String message) {
+        System.out.println("SEND " + message);
         printStream.println(message);
     }
 

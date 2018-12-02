@@ -3,6 +3,7 @@ package prj.shtelo.inminic.client;
 import prj.shtelo.inminic.client.cameraobject.Camera;
 import prj.shtelo.inminic.client.cameraobject.Character;
 import prj.shtelo.inminic.client.cameraobject.Map;
+import prj.shtelo.inminic.client.cameraobject.Player;
 import prj.shtelo.inminic.client.root.Color;
 import prj.shtelo.inminic.client.root.Display;
 import prj.shtelo.inminic.client.root.KeyManager;
@@ -140,6 +141,16 @@ public class Root implements Runnable {
         }
     }
 
+    public Player findPlayerByName(String name) {
+        for (RootObject object : RootObject.objects) {
+            Player player = (Player) object;
+            if (player.getName().equalsIgnoreCase(name)) {
+                return player;
+            }
+        }
+        return null;
+    }
+
     public KeyManager getKeyManager() {
         return keyManager;
     }
@@ -160,7 +171,7 @@ public class Root implements Runnable {
         return camera;
     }
 
-    public Map getMap() {
-        return map;
+    public String getName() {
+        return name;
     }
 }

@@ -32,6 +32,7 @@ public class Main {
 }
 
     void announce(String message) {
+        System.out.println("ANNOUNCEMENT\t" + message);
         for (ServerThread client : clients) {
             client.getPrintStream().println(message);
         }

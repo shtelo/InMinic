@@ -34,6 +34,8 @@ public class Character extends RootObject {
 
     private double velocity;
 
+    private double previousX, previousY;
+
     public Character(double x, double y, String name, Camera camera, Map map, Root root) {
         this.x = x;
         this.y = y;
@@ -68,6 +70,8 @@ public class Character extends RootObject {
 
         delay = 0;
         watchingRight = true;
+
+        root.getClient().send("playerName\t" + name);
     }
 
     @Override
@@ -108,7 +112,10 @@ public class Character extends RootObject {
             gravityAction();
         } catch (NullPointerException ignored) {}
 
-        root.getClient().send("move\t" + x + "\t" + y);
+        if (x != previousX || y != previousY)
+            root.getClient().send("move\t" + toString());
+        previousX = x;
+        previousY = y;
     }
 
     private void gravityAction() {
@@ -125,7 +132,7 @@ public class Character extends RootObject {
             velocity -= 300 / root.getDisplay().getDisplayFps();
         }
 
-        y = y + velocity;
+        y += velocity;
     }
 
     private int getDeltaY() {
@@ -169,5 +176,14 @@ public class Character extends RootObject {
 
     public double getY() {
         return y;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String toString() {
+        return x + "\t" + y + "\t" + watchingRight;
     }
 }

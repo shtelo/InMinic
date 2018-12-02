@@ -10,7 +10,7 @@ public abstract class RootObject {
         objects.add(rootObject);
     }
 
-    private void destroy() {
+    public void destroy() {
         objects.remove(this);
     }
 

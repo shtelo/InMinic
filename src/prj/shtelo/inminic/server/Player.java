@@ -9,6 +9,7 @@ class Player {
     private BufferedImage[] images;
 
     private int form;
+    private boolean watchingRight = true;
 
     Player(double x, double y, String name) {
         this.x = x;
@@ -32,5 +33,13 @@ class Player {
 
     public String toString() {
         return x + "\t" + y + "\t" + name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    void setWatchingRight(boolean watchingRight) {
+        this.watchingRight = watchingRight;
     }
 }

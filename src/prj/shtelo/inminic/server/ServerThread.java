@@ -28,11 +28,18 @@ class ServerThread extends Thread {
             printStream.println("player\t" + serverThread.getPlayer().toString());
         }
 
+        String[] playerInfos = scanner.nextLine().split("\t");
+
+        player = new Player(0, 0, playerInfos[1]);
+
+        server.announce("connect\t" + player.toString());
+
         server.getClients().add(this);
     }
 
     private void disconnect() {
         System.out.println(socket.getLocalSocketAddress() + "이(가) 서버에서 퇴장했습니다.");
+        server.announce("disconnect\t" + player.toString());
         server.getClients().remove(this);
     }
 
@@ -54,7 +61,8 @@ class ServerThread extends Thread {
             if (messages[0].equalsIgnoreCase("move")) {
                 player.setX(Double.parseDouble(messages[1]));
                 player.setY(Double.parseDouble(messages[2]));
-                server.announce(message);
+                player.setWatchingRight(Boolean.parseBoolean(messages[3]));
+                server.announce(message + "\t" + player.getName());
             }
 
             System.out.println(socket.getLocalSocketAddress() + ": " + message);
@@ -68,18 +76,17 @@ class ServerThread extends Thread {
         try {
             scanner = new Scanner(socket.getInputStream());
             printStream = new PrintStream(socket.getOutputStream());
-            player = new Player(0, 0, "sch_0q0");
         } catch (IOException e) {
             e.printStackTrace();
         }
         super.start();
     }
 
-    public Player getPlayer() {
+    private Player getPlayer() {
         return player;
     }
 
-    public PrintStream getPrintStream() {
+    PrintStream getPrintStream() {
         return printStream;
     }
 }

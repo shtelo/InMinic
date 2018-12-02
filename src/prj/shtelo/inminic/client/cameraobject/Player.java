@@ -25,8 +25,6 @@ public class Player extends RootObject {
     private int form = 0;
     private boolean watchingRight;
 
-    private double velocity;
-
     public Player(double x, double y, String name, Camera camera, Root root) {
         this.x = x;
         this.y = y;
@@ -84,5 +82,21 @@ public class Player extends RootObject {
 
     private BufferedImage cropImage(BufferedImage src, int x, int y) {
         return src.getSubimage(x, y, 32, 64);
+    }
+
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public void setY(double y) {
+        this.y = y;
+    }
+
+    public void setWatchingRight(boolean watchingRight) {
+        this.watchingRight = watchingRight;
+    }
+
+    public String getName() {
+        return name;
     }
 }

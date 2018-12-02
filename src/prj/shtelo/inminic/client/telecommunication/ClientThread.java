@@ -4,9 +4,9 @@ import prj.shtelo.inminic.client.Root;
 import prj.shtelo.inminic.client.cameraobject.Player;
 import prj.shtelo.inminic.client.rootobject.RootObject;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.Arrays;
 import java.util.Scanner;
 
 class ClientThread extends Thread {
@@ -33,7 +33,7 @@ class ClientThread extends Thread {
         message = scanner.nextLine();
         messages = message.split("\t");
 
-        System.out.println(Arrays.toString(messages));
+        System.out.println("RECV " + message);
         if (messages[0].equalsIgnoreCase("serverInfo")) {
             client.setMapName(messages[1]);
 
@@ -44,6 +44,10 @@ class ClientThread extends Thread {
                 double y = Double.parseDouble(messages[2]);
                 String name = messages[3];
                 RootObject.add(new Player(x, y, name, root.getCamera(), root));
+                if (name.equalsIgnoreCase(root.getName())) {
+                    JOptionPane.showMessageDialog(null, "같은 이름의 플레이어가 서버에 있습니다.", "InMinic Error", JOptionPane.ERROR_MESSAGE);
+                    System.exit(0);
+                }
             }
         }
     }
@@ -56,7 +60,31 @@ class ClientThread extends Thread {
             message = scanner.nextLine();
             messages = message.split("\t");
 
-            System.out.println(Arrays.toString(messages));
+            System.out.println("RECV " + message);
+
+            if (messages[0].equalsIgnoreCase("connect")) {
+                if (!messages[3].equalsIgnoreCase(root.getCharacter().getName())) {
+                    double x = Double.parseDouble(messages[1]);
+                    double y = Double.parseDouble(messages[2]);
+                    RootObject.add(new Player(x, y, messages[3], root.getCamera(), root));
+                }
+            } else if (messages[0].equalsIgnoreCase("disconnect")) {
+                String name = messages[3];
+
+                root.findPlayerByName(name).destroy();
+            } else if (messages[0].equalsIgnoreCase("move")) {
+                String name = messages[4];
+                if (!name.equalsIgnoreCase(root.getCharacter().getName())) {
+                    double x = Double.parseDouble(messages[1]);
+                    double y = Double.parseDouble(messages[2]);
+                    boolean watchingRight = Boolean.parseBoolean(messages[3]);
+
+                    Player player = root.findPlayerByName(name);
+                    player.setX(x);
+                    player.setY(y);
+                    player.setWatchingRight(watchingRight);
+                }
+            }
         }
     }
 }
