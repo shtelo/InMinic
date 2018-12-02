@@ -59,10 +59,10 @@ class ServerThread extends Thread {
             messages = message.split("\t");
 
             if (messages[0].equalsIgnoreCase("move")) {
-                player.setX(Double.parseDouble(messages[1]));
-                player.setY(Double.parseDouble(messages[2]));
-                player.setWatchingRight(Boolean.parseBoolean(messages[3]));
-                server.announce(message + "\t" + player.getName());
+                player.setX(Double.parseDouble(messages[2]));
+                player.setY(Double.parseDouble(messages[3]));
+                player.setWatchingRight(Boolean.parseBoolean(messages[4]));
+                server.announce(message);
             }
 
             System.out.println(socket.getLocalSocketAddress() + ": " + message);

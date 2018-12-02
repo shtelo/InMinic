@@ -8,6 +8,7 @@ public class KeyManager implements KeyListener {
 
     private boolean[] keys = new boolean[count], lastKeys = new boolean[count];
     private boolean[] move = new boolean[2];
+    private boolean moveStop = false;
 
     private boolean zoomUp = false, zoomDown = false;
 
@@ -19,6 +20,8 @@ public class KeyManager implements KeyListener {
 
         zoomDown = !previousKeys[KeyEvent.VK_OPEN_BRACKET] && keys[KeyEvent.VK_OPEN_BRACKET];
         zoomUp = !previousKeys[KeyEvent.VK_CLOSE_BRACKET] && keys[KeyEvent.VK_CLOSE_BRACKET];
+
+        moveStop = previousKeys[KeyEvent.VK_A] && !keys[KeyEvent.VK_A] || previousKeys[KeyEvent.VK_D] && !keys[KeyEvent.VK_D];
 
         lastKeys = keys.clone();
     }
@@ -46,6 +49,10 @@ public class KeyManager implements KeyListener {
 
     public boolean[] getKeys() {
         return keys;
+    }
+
+    public boolean isMoveStop() {
+        return moveStop;
     }
 
     public boolean isZoomUp() {

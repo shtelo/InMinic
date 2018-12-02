@@ -40,9 +40,9 @@ class ClientThread extends Thread {
             int count = Integer.parseInt(messages[2]);
             for (int i = 0; i < count; i++) {
                 messages = scanner.nextLine().split("\t");
-                double x = Double.parseDouble(messages[1]);
-                double y = Double.parseDouble(messages[2]);
-                String name = messages[3];
+                String name = messages[1];
+                double x = Double.parseDouble(messages[2]);
+                double y = Double.parseDouble(messages[3]);
                 RootObject.add(new Player(x, y, name, root.getCamera(), root));
                 if (name.equalsIgnoreCase(root.getName())) {
                     JOptionPane.showMessageDialog(null, "같은 이름의 플레이어가 서버에 있습니다.", "InMinic Error", JOptionPane.ERROR_MESSAGE);
@@ -63,26 +63,28 @@ class ClientThread extends Thread {
             System.out.println("RECV " + message);
 
             if (messages[0].equalsIgnoreCase("connect")) {
-                if (!messages[3].equalsIgnoreCase(root.getCharacter().getName())) {
-                    double x = Double.parseDouble(messages[1]);
-                    double y = Double.parseDouble(messages[2]);
-                    RootObject.add(new Player(x, y, messages[3], root.getCamera(), root));
+                if (!messages[1].equalsIgnoreCase(root.getCharacter().getName())) {
+                    double x = Double.parseDouble(messages[2]);
+                    double y = Double.parseDouble(messages[3]);
+                    RootObject.add(new Player(x, y, messages[1], root.getCamera(), root));
                 }
             } else if (messages[0].equalsIgnoreCase("disconnect")) {
-                String name = messages[3];
+                String name = messages[2];
 
                 root.findPlayerByName(name).destroy();
             } else if (messages[0].equalsIgnoreCase("move")) {
-                String name = messages[4];
+                String name = messages[1];
                 if (!name.equalsIgnoreCase(root.getCharacter().getName())) {
-                    double x = Double.parseDouble(messages[1]);
-                    double y = Double.parseDouble(messages[2]);
-                    boolean watchingRight = Boolean.parseBoolean(messages[3]);
+                    double x = Double.parseDouble(messages[2]);
+                    double y = Double.parseDouble(messages[3]);
+                    boolean watchingRight = Boolean.parseBoolean(messages[4]);
+                    int form = Integer.parseInt(messages[5]);
 
                     Player player = root.findPlayerByName(name);
                     player.setX(x);
                     player.setY(y);
                     player.setWatchingRight(watchingRight);
+                    player.setForm(form);
                 }
             }
         }

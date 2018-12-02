@@ -32,7 +32,7 @@ class Player {
     }
 
     public String toString() {
-        return x + "\t" + y + "\t" + name;
+        return name + "\t" + x + "\t" + y + "\t";
     }
 
     public String getName() {

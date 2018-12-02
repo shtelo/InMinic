@@ -112,7 +112,7 @@ public class Character extends RootObject {
             gravityAction();
         } catch (NullPointerException ignored) {}
 
-        if (x != previousX || y != previousY)
+        if (x != previousX || y != previousY || root.getKeyManager().isMoveStop())
             root.getClient().send("move\t" + toString());
         previousX = x;
         previousY = y;
@@ -184,6 +184,6 @@ public class Character extends RootObject {
 
     @Override
     public String toString() {
-        return x + "\t" + y + "\t" + watchingRight;
+        return name + "\t" + x + "\t" + y + "\t" + watchingRight + "\t" + form;
     }
 }

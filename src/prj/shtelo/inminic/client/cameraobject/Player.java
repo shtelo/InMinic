@@ -96,6 +96,10 @@ public class Player extends RootObject {
         this.watchingRight = watchingRight;
     }
 
+    public void setForm(int form) {
+        this.form = form;
+    }
+
     public String getName() {
         return name;
     }
