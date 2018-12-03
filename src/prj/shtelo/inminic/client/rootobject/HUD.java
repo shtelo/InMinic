@@ -11,7 +11,7 @@ public class HUD extends RootObject {
     private Camera camera;
     private Root root;
 
-    private final int count = 4;
+    private final int count = 5;
     private String[] lines = new String[count];
 
     public HUD(TextFormat textFormat, Camera camera, Root root) {
@@ -26,6 +26,10 @@ public class HUD extends RootObject {
         lines[1] = "CAMERA " + String.format("%f", camera.getX()) + " " + String.format("%f", camera.getY()) + " " + String.format("%f", camera.getZoom());
         lines[2] = "OBJECTS " + RootObject.objects.size();
         lines[3] = "FPS " + String.format("%f", root.getDisplay().getDisplayFps()) + " / " + root.getDisplay().getFps();
+        if (root.getClient().getConnected())
+            lines[4] = "SERVER " + root.getClient().getHost() + ":" + root.getClient().getPort();
+        else
+            lines[4] = "SERVER NOT_CONNECTED";
     }
 
     @Override

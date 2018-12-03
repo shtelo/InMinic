@@ -44,8 +44,6 @@ public class Root implements Runnable {
         this.name = name;
         this.host = host;
         this.port = port;
-
-        init();
     }
 
     private void init() throws IOException {
@@ -58,7 +56,10 @@ public class Root implements Runnable {
         display = new Display(title, width, height, fps, this);
         thread = new Thread(this);
 
-        map = new Map(client.getMapName(), camera, this);
+        if (client.getConnected())
+            map = new Map(client.getMapName(), camera, this);
+        else
+            map = new Map("test001", camera, this);
         character = new Character(11, -100, name, camera, map, this);
     }
 
@@ -123,7 +124,9 @@ public class Root implements Runnable {
         stop();
     }
 
-    void start() {
+    void start() throws IOException {
+        init();
+
         if (running)
             return;
         running = true;

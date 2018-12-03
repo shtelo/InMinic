@@ -71,7 +71,8 @@ public class Character extends RootObject {
         delay = 0;
         watchingRight = true;
 
-        root.getClient().send("playerName\t" + name);
+        if (root.getClient().getConnected())
+            root.getClient().send("playerName\t" + name);
     }
 
     @Override
@@ -112,8 +113,9 @@ public class Character extends RootObject {
             gravityAction();
         } catch (NullPointerException ignored) {}
 
-        if (x != previousX || y != previousY || root.getKeyManager().isMoveStop())
-            root.getClient().send("move\t" + toString());
+        if (root.getClient().getConnected())
+            if (x != previousX || y != previousY || root.getKeyManager().isMoveStop())
+                root.getClient().send("move\t" + toString());
         previousX = x;
         previousY = y;
     }

@@ -31,8 +31,8 @@ public class Client {
         try {
             socket = new Socket(host, port);
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "서버에 연결할 수 없습니다!", "InMinic Error", JOptionPane.ERROR_MESSAGE);
-            System.exit(0);
+//            JOptionPane.showMessageDialog(null, "서버에 연결할 수 없습니다!", "InMinic Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "서버에 연결할 수 없습니다!\n오프라인 모드로 계속합니다.", "InMinic Info", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
         connected = true;
@@ -54,6 +54,18 @@ public class Client {
 
     public String getMapName() {
         return mapName;
+    }
+
+    public boolean getConnected() {
+        return connected;
+    }
+
+    public String getHost() {
+        return host;
+    }
+
+    public int getPort() {
+        return port;
     }
 
     void setMapName(String mapName) {
