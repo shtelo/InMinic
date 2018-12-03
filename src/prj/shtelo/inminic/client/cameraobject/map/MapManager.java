@@ -51,7 +51,10 @@ public class MapManager {
         }
     }
 
-    private void write() {
+    public void write(int width, int height) {
+        this.width = width;
+        this.height = height;
+
         PrintStream printStream;
 
         try {
