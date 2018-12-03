@@ -1,9 +1,11 @@
 package prj.shtelo.inminic.client.cameraobject;
 
 import prj.shtelo.inminic.client.Root;
+import prj.shtelo.inminic.client.cameraobject.map.Pixel;
 import prj.shtelo.inminic.client.root.Color;
 import prj.shtelo.inminic.client.root.TextFormat;
 import prj.shtelo.inminic.client.rootobject.RootObject;
+import prj.shtelo.inminic.client.rootobject.Text;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -11,6 +13,7 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Character extends RootObject {
     private final static int collisionBoxX = 4, collisionBoxY = 16, collisionBoxWidth = 24, collisionBoxHeight = 48;
@@ -84,10 +87,22 @@ public class Character extends RootObject {
         int maxDelay = (int) (root.getDisplay().getDisplayFps() / 8);
 
         if (root.getKeyManager().getMove()[0]) {
-            x -= offset;
+            ArrayList<int[]> collisions = getLeftCollision();
+            if (collisions.isEmpty()) {
+                x -= offset;
+            } else if (collisions.get(0)[1] == (int) (collisionBoxStartY + collisionBoxHeight - 1)) {
+                x -= 1;
+                y -= 1;
+            }
             watchingRight = false;
         } if (root.getKeyManager().getMove()[1]) {
-            x += offset;
+            ArrayList<int[]> collisions = getRightCollision();
+            if (collisions.isEmpty()) {
+                x += offset;
+            } else if (collisions.get(0)[1] == (int) (collisionBoxStartY + collisionBoxHeight - 1)) {
+                x += 1;
+                y -= 1;
+            }
             watchingRight = true;
         }
 
@@ -152,6 +167,30 @@ public class Character extends RootObject {
         return Integer.MAX_VALUE;
     }
 
+    private ArrayList<int[]> getLeftCollision() {
+        Pixel[][] map = this.map.getMapManager().getPixels();
+        ArrayList<int[]> positions = new ArrayList<>();
+        for (int y = (int) collisionBoxStartY; y < collisionBoxStartY + collisionBoxHeight - 1; y++) {
+            if (collisionBoxStartX - 1 < 0 || y < 0)
+                continue;
+            if (map[y][(int) (collisionBoxStartX - 1)].isCollide())
+                positions.add(new int[]{(int) (collisionBoxStartX - 1), y});
+        }
+        return positions;
+    }
+
+    private ArrayList<int[]> getRightCollision() {
+        Pixel[][] map = this.map.getMapManager().getPixels();
+        ArrayList<int[]> positions = new ArrayList<>();
+        for (int y = (int) collisionBoxStartY; y < collisionBoxStartY + collisionBoxHeight - 1; y++) {
+            if (y < 0)
+                continue;
+            if (map[y][(int) (collisionBoxStartX + collisionBoxWidth + 1)].isCollide())
+                positions.add(new int[]{(int) (collisionBoxStartX + collisionBoxWidth + 1), y});
+        }
+        return positions;
+    }
+
     @Override
     public void render(Graphics graphics) {
         BufferedImage image = images[form];
@@ -164,8 +203,8 @@ public class Character extends RootObject {
             graphics.drawImage(image, x, y, width, height, null);
         else
             graphics.drawImage(image, x + width, y, -width, height, null);
-        graphics.setFont(TEXT_FORMAT.getFont());
-        graphics.drawString(name, (width - graphics.getFontMetrics().stringWidth(name)) / 2 + x, (int) (y - TEXT_FORMAT.getSize()));
+
+        new Text((width - graphics.getFontMetrics().stringWidth(name)) / 2 + x, (int) (y - TEXT_FORMAT.getSize()), name, TEXT_FORMAT).render(graphics);
     }
 
     private BufferedImage cropImage(BufferedImage src, int x, int y) {

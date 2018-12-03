@@ -51,6 +51,10 @@ public class MapManager {
         }
     }
 
+    public void write() {
+        write(width, height);
+    }
+
     public void write(int width, int height) {
         this.width = width;
         this.height = height;
@@ -90,6 +94,12 @@ public class MapManager {
 
     public Pixel[][] getPixels() {
         return pixels;
+    }
+
+    public void setPixels(Pixel[][] pixels) {
+        this.pixels = pixels;
+        this.height = this.pixels.length;
+        this.width = this.pixels[0].length;
     }
 
     public void setName(String name) {

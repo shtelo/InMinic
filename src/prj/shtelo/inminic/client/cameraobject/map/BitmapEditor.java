@@ -7,20 +7,14 @@ import java.io.File;
 import java.io.IOException;
 
 public class BitmapEditor {
-
     private static String PATH = ".\\res\\map\\";
     private static int RGB_BLACK = -16777216;
 
     private int width, height;
 
-    public BitmapEditor() {
-
-    }
-
-    public Pixel[][] readBitmap() {
-
-        BufferedImage colorImg = null;
-        BufferedImage collisionImg = null;
+    public Pixel[][] load() {
+        BufferedImage colorImg;
+        BufferedImage collisionImg;
 
         try {
             colorImg = ImageIO.read(new File(PATH + "color.png"));

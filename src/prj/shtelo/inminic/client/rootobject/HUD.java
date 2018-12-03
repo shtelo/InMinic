@@ -13,6 +13,7 @@ public class HUD extends RootObject {
 
     private final int count = 5;
     private String[] lines = new String[count];
+    private Text[] texts = new Text[count];
 
     public HUD(TextFormat textFormat, Camera camera, Root root) {
         this.textFormat = textFormat;
@@ -30,14 +31,15 @@ public class HUD extends RootObject {
             lines[4] = "SERVER " + root.getClient().getHost() + ":" + root.getClient().getPort();
         else
             lines[4] = "SERVER NOT_CONNECTED";
+
+        for (int i = 0; i < count; i++) {
+            texts[i] = new Text(0, (int) (textFormat.getSize() * (i + 1)), lines[i], textFormat);
+        }
     }
 
     @Override
     public void render(Graphics graphics) {
-        graphics.setColor(textFormat.getColor());
-        graphics.setFont(textFormat.getFont());
-
-        for (int i = 0; i < lines.length; i++)
-            graphics.drawString(lines[i], 0, (int) (textFormat.getSize() * (i+1)));
+        for (int i = 0; i < count; i++)
+            texts[i].render(graphics);
     }
 }
