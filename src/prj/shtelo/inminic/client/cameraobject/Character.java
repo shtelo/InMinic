@@ -90,18 +90,12 @@ public class Character extends RootObject {
             ArrayList<int[]> collisions = getLeftCollision();
             if (collisions.isEmpty()) {
                 x -= offset;
-            } else if (collisions.get(0)[1] == (int) (collisionBoxStartY + collisionBoxHeight - 1)) {
-                x -= 1;
-                y -= 1;
             }
             watchingRight = false;
         } if (root.getKeyManager().getMove()[1]) {
             ArrayList<int[]> collisions = getRightCollision();
             if (collisions.isEmpty()) {
                 x += offset;
-            } else if (collisions.get(0)[1] == (int) (collisionBoxStartY + collisionBoxHeight - 1)) {
-                x += 1;
-                y -= 1;
             }
             watchingRight = true;
         }
