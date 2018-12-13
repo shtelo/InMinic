@@ -1,8 +1,9 @@
 package prj.shtelo.inminic.client.cameraobject;
 
 import prj.shtelo.inminic.client.Root;
-import prj.shtelo.inminic.client.cameraobject.map.Pixel;
 import prj.shtelo.inminic.client.root.Color;
+import prj.shtelo.inminic.client.root.Display;
+import prj.shtelo.inminic.client.root.KeyManager;
 import prj.shtelo.inminic.client.root.TextFormat;
 import prj.shtelo.inminic.client.rootobject.RootObject;
 import prj.shtelo.inminic.client.rootobject.Text;
@@ -13,7 +14,6 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class Character extends RootObject {
     private final static int collisionBoxX = 4, collisionBoxY = 16, collisionBoxWidth = 24, collisionBoxHeight = 48;
@@ -27,6 +27,8 @@ public class Character extends RootObject {
     private String name;
     private Camera camera;
     private Map map;
+    private KeyManager keyManager;
+    private Display display;
     private Root root;
 
     private BufferedImage[] images;
@@ -39,12 +41,14 @@ public class Character extends RootObject {
 
     private double previousX, previousY;
 
-    public Character(double x, double y, String name, Camera camera, Map map, Root root) {
+    public Character(double x, double y, String name, Camera camera, Map map, KeyManager keyManager, Display display, Root root) {
         this.x = x;
         this.y = y;
         this.name = name;
         this.camera = camera;
         this.map = map;
+        this.keyManager = keyManager;
+        this.display = display;
         this.root = root;
 
         init();
@@ -83,24 +87,18 @@ public class Character extends RootObject {
          collisionBoxStartX = x - width / 2. + collisionBoxX;
          collisionBoxStartY = y - height / 2. + collisionBoxY;
 
-        double offset = 60. / root.getDisplay().getDisplayFps();
-        int maxDelay = (int) (root.getDisplay().getDisplayFps() / 8);
+        double offset = 60. / display.getDisplayFps();
+        int maxDelay = (int) (display.getDisplayFps() / 8);
 
-        if (root.getKeyManager().getMove()[0]) {
-            ArrayList<int[]> collisions = getLeftCollision();
-            if (collisions.isEmpty()) {
-                x -= offset;
-            }
+        if (keyManager.getMove()[0]) {  // 떨어지는 것 처럼, 오른쪽 왼쪽 벽까지의 거리를 구해서 그걸로 써먹는 것으로 하자.
+            x -= offset;
             watchingRight = false;
-        } if (root.getKeyManager().getMove()[1]) {
-            ArrayList<int[]> collisions = getRightCollision();
-            if (collisions.isEmpty()) {
-                x += offset;
-            }
+        } if (keyManager.getMove()[1]) {
+            x += offset;
             watchingRight = true;
         }
 
-        boolean moving = root.getKeyManager().getMove()[0] || root.getKeyManager().getMove()[1];
+        boolean moving = keyManager.getMove()[0] || keyManager.getMove()[1];
         if (moving) {
             delay++;
 
@@ -123,15 +121,17 @@ public class Character extends RootObject {
         } catch (NullPointerException ignored) {}
 
         if (root.getClient().getConnected())
-            if (x != previousX || y != previousY || root.getKeyManager().isMoveStop())
+            if (x != previousX || y != previousY || keyManager.isMoveStop())
                 root.getClient().send("move\t" + toString());
         previousX = x;
         previousY = y;
     }
 
+    private double py;
+
     private void gravityAction() {
         if (getDeltaY() > 0) {
-            velocity += 1411.2 / root.getDisplay().getDisplayFps() / root.getDisplay().getDisplayFps();
+            velocity += 1411.2 / display.getDisplayFps() / display.getDisplayFps();
             if (velocity > getDeltaY()) {
                 velocity = getDeltaY();
             }
@@ -139,11 +139,16 @@ public class Character extends RootObject {
             velocity = 0;
         }
 
-        if (root.getKeyManager().getKeys()[KeyEvent.VK_SPACE] && getDeltaY() == 0) {
-            velocity -= 300 / root.getDisplay().getDisplayFps();
+        if (keyManager.getKeys()[KeyEvent.VK_SPACE] && getDeltaY() == 0) {
+            velocity -= 300 / display.getDisplayFps();
         }
 
         y += velocity;
+
+        if (y == py) {
+            y = (int) y;
+        }
+        py = y;
     }
 
     private int getDeltaY() {
@@ -161,37 +166,13 @@ public class Character extends RootObject {
         return Integer.MAX_VALUE;
     }
 
-    private ArrayList<int[]> getLeftCollision() {
-        Pixel[][] map = this.map.getMapManager().getPixels();
-        ArrayList<int[]> positions = new ArrayList<>();
-        for (int y = (int) collisionBoxStartY; y < collisionBoxStartY + collisionBoxHeight - 1; y++) {
-            if (collisionBoxStartX - 1 < 0 || y < 0)
-                continue;
-            if (map[y][(int) (collisionBoxStartX - 1)].isCollide())
-                positions.add(new int[]{(int) (collisionBoxStartX - 1), y});
-        }
-        return positions;
-    }
-
-    private ArrayList<int[]> getRightCollision() {
-        Pixel[][] map = this.map.getMapManager().getPixels();
-        ArrayList<int[]> positions = new ArrayList<>();
-        for (int y = (int) collisionBoxStartY; y < collisionBoxStartY + collisionBoxHeight - 1; y++) {
-            if (y < 0)
-                continue;
-            if (map[y][(int) (collisionBoxStartX + collisionBoxWidth + 1)].isCollide())
-                positions.add(new int[]{(int) (collisionBoxStartX + collisionBoxWidth + 1), y});
-        }
-        return positions;
-    }
-
     @Override
     public void render(Graphics graphics) {
         BufferedImage image = images[form];
         int width = (int) (this.width * camera.getZoom());
         int height = (int) (this.height * camera.getZoom());
-        int x = (int) ((this.x - camera.getX()) * camera.getZoom() + (root.getDisplay().getWidth() - width) / 2);
-        int y = (int) ((this.y - camera.getY()) * camera.getZoom() + (root.getDisplay().getHeight() - height) / 2);
+        int x = (int) ((this.x - camera.getX()) * camera.getZoom() + (display.getWidth() - width) / 2);
+        int y = (int) ((this.y - camera.getY()) * camera.getZoom() + (display.getHeight() - height) / 2);
 
         if (watchingRight)
             graphics.drawImage(image, x, y, width, height, null);

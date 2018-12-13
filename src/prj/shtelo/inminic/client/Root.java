@@ -59,8 +59,8 @@ public class Root implements Runnable {
         if (client.getConnected())
             map = new Map(client.getMapName(), camera, this);
         else
-            map = new Map("test001", camera, this);
-        character = new Character(11, -100, name, camera, map, this);
+            map = new Map("test002", camera, this);
+        character = new Character(11, -100, name, camera, map, keyManager, display, this);
     }
 
     private void tick() {

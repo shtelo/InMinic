@@ -5,6 +5,7 @@ import prj.shtelo.inminic.client.cameraobject.map.MapManager;
 import prj.shtelo.inminic.client.rootobject.RootObject;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class Map extends RootObject {
     private String name;
@@ -12,6 +13,7 @@ public class Map extends RootObject {
     private Root root;
 
     private MapManager mapManager;
+    private BufferedImage image;
 
     public Map(String name, Camera camera, Root root) {
         this.name = name;
@@ -23,25 +25,26 @@ public class Map extends RootObject {
 
     private void init() {
         mapManager = new MapManager(name);
-    }
 
-    @Override
-    public void render(Graphics graphics) {
+        image = new BufferedImage(mapManager.getWidth(), mapManager.getHeight(), BufferedImage.TYPE_INT_RGB);
         for (int y = 0; y < mapManager.getHeight(); y++) {
             for (int x = 0; x < mapManager.getWidth(); x++) {
-                graphics.setColor(mapManager.getColor(x, y));
-                int xp = (int) (x * camera.getZoom() - camera.getX() * camera.getZoom()+ (root.getDisplay().getWidth() / 2));
-                if (xp + camera.getZoom() < 0 || root.getDisplay().getWidth() < xp) continue;
-
-                int yp = (int) (y * camera.getZoom() - camera.getY() * camera.getZoom() + (root.getDisplay().getHeight() / 2));
-                if (yp + camera.getZoom() < 0 || root.getDisplay().getHeight() < yp) continue;
-
-                graphics.fillRect(xp, yp, (int) camera.getZoom() + 2, (int) camera.getZoom() + 2);
+                image.setRGB(x, y, mapManager.getColor(x, y).getRGB());
             }
         }
     }
 
-    public MapManager getMapManager() {
+    @Override
+    public void render(Graphics graphics) {
+        int x = (int) (-camera.getX() * camera.getZoom() + root.getDisplay().getWidth() / 2);
+        int y = (int) (-camera.getY() * camera.getZoom() + root.getDisplay().getHeight() / 2);
+        int width = (int) (image.getWidth() * camera.getZoom());
+        int height = (int) (image.getHeight() * camera.getZoom());
+
+        graphics.drawImage(image, x, y, width, height, null);
+    }
+
+    MapManager getMapManager() {
         return mapManager;
     }
 }
