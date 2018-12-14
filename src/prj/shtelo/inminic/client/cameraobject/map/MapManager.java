@@ -22,7 +22,7 @@ public class MapManager {
     }
 
     private void init() {
-        directory = ".\\res\\map\\" + name + ".txt";
+        directory = "./res/map/" + name + "/main.txt";
 
         read();
     }

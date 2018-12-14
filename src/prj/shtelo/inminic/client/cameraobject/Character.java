@@ -17,7 +17,7 @@ import java.io.IOException;
 
 public class Character extends RootObject {
     private final static int collisionBoxX = 4, collisionBoxY = 16, collisionBoxWidth = 24, collisionBoxHeight = 48;
-    private final TextFormat TEXT_FORMAT = new TextFormat(".\\res\\font\\D2Coding.ttc", 18, Color.text);
+    private final TextFormat TEXT_FORMAT = new TextFormat("./res/font/D2Coding.ttc", 18, Color.text);
     private int width = 32, height = 64;
 
     private double collisionBoxStartX;
@@ -58,7 +58,7 @@ public class Character extends RootObject {
         BufferedImage image;
         
         try {
-            image = ImageIO.read(new File(".\\res\\character\\" + name + ".png"));
+            image = ImageIO.read(new File("./res/character/" + name + ".png"));
         } catch (IOException e) {
             e.printStackTrace();
             return;
@@ -189,7 +189,9 @@ public class Character extends RootObject {
     private int getDeltaLeft() {
         int startX = (int) collisionBoxStartX;
         for (int x = startX; x > 0; x--) {
+            if (x >= map.getMapManager().getWidth()) continue;
             for (int y = (int) collisionBoxStartY; y < collisionBoxStartY + collisionBoxHeight; y++) {
+                if (y < 0 || y >= map.getMapManager().getHeight()) continue;
                 if (map.getMapManager().getPixels()[y][x].isCollide()) {
                     return startX - x;
                 }

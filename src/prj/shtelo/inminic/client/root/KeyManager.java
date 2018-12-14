@@ -11,6 +11,7 @@ public class KeyManager implements KeyListener {
     private boolean moveStop = false;
 
     private boolean zoomUp = false, zoomDown = false;
+    private boolean toggleHUD = false;
 
     public void tick() {
         move[0] = keys[KeyEvent.VK_A];
@@ -20,6 +21,8 @@ public class KeyManager implements KeyListener {
 
         zoomDown = !previousKeys[KeyEvent.VK_OPEN_BRACKET] && keys[KeyEvent.VK_OPEN_BRACKET];
         zoomUp = !previousKeys[KeyEvent.VK_CLOSE_BRACKET] && keys[KeyEvent.VK_CLOSE_BRACKET];
+
+        toggleHUD = !previousKeys[KeyEvent.VK_BACK_QUOTE] && keys[KeyEvent.VK_BACK_QUOTE];
 
         moveStop = previousKeys[KeyEvent.VK_A] && !keys[KeyEvent.VK_A] || previousKeys[KeyEvent.VK_D] && !keys[KeyEvent.VK_D];
 
@@ -61,5 +64,9 @@ public class KeyManager implements KeyListener {
 
     public boolean isZoomDown() {
         return zoomDown;
+    }
+
+    public boolean isToggleHUD() {
+        return toggleHUD;
     }
 }

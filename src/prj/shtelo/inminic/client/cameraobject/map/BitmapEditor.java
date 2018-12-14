@@ -7,7 +7,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class BitmapEditor {
-    private static String PATH = ".\\res\\map\\";
+    private static String PATH = "./res/map/";
     private static int RGB_BLACK = -16777216;
 
     private int width, height;

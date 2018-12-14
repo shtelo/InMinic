@@ -49,7 +49,7 @@ public class Root implements Runnable {
     private void init() throws IOException {
         keyManager = new KeyManager();
         camera = new Camera(0, 0, 2, this);
-        hud = new HUD(new TextFormat(".\\res\\font\\D2Coding.ttc", 15, Color.text), camera, this);
+        hud = new HUD(new TextFormat("./res/font/D2Coding.ttc", 15, Color.text), camera, keyManager, this);
 
         client = new Client(host, port, this);
 

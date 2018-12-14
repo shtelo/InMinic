@@ -12,7 +12,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class Player extends RootObject {
-    private final TextFormat TEXT_FORMAT = new TextFormat(".\\res\\font\\D2Coding.ttc", 18, Color.text);
+    private final TextFormat TEXT_FORMAT = new TextFormat("./res/font/D2Coding.ttc", 18, Color.text);
     private int width = 32, height = 64;
 
     private double x, y;
@@ -39,7 +39,7 @@ public class Player extends RootObject {
         BufferedImage image;
         
         try {
-            image = ImageIO.read(new File(".\\res\\character\\" + name + ".png"));
+            image = ImageIO.read(new File("./res/character/" + name + ".png"));
         } catch (IOException e) {
             e.printStackTrace();
             return;
