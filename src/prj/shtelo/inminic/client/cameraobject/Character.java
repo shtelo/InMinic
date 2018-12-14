@@ -90,11 +90,17 @@ public class Character extends RootObject {
         double offset = 60. / display.getDisplayFps();
         int maxDelay = (int) (display.getDisplayFps() / 8);
 
+//        System.out.println(getDeltaLeft());
+
         if (keyManager.getMove()[0]) {  // 떨어지는 것 처럼, 오른쪽 왼쪽 벽까지의 거리를 구해서 그걸로 써먹는 것으로 하자.
-            x -= offset;
+            if (getDeltaLeft() > 0) {
+                x -= Math.min(getDeltaLeft(), offset);
+            }
             watchingRight = false;
         } if (keyManager.getMove()[1]) {
-            x += offset;
+            if (getDeltaRight() > 0) {
+                x += Math.min(getDeltaRight(), offset);
+            }
             watchingRight = true;
         }
 
@@ -160,6 +166,32 @@ public class Character extends RootObject {
                 }
                 if (map.getMapManager().getPixels()[y + offsetY][x].isCollide()) {
                     return offsetY;
+                }
+            }
+        }
+        return Integer.MAX_VALUE;
+    }
+
+    private int getDeltaRight() {
+        int startX = (int) (collisionBoxStartX + collisionBoxWidth);
+        for (int x = startX; x < map.getMapManager().getWidth(); x++) {
+            if (x < 0 || x >= map.getMapManager().getWidth()) continue;
+            for (int y = (int) collisionBoxStartY; y < collisionBoxStartY + collisionBoxHeight; y++) {
+                if (y < 0 || y >= map.getMapManager().getHeight()) continue;
+                if (map.getMapManager().getPixels()[y][x].isCollide()) {
+                    return x - startX;
+                }
+            }
+        }
+        return Integer.MAX_VALUE;
+    }
+
+    private int getDeltaLeft() {
+        int startX = (int) collisionBoxStartX;
+        for (int x = startX; x > 0; x--) {
+            for (int y = (int) collisionBoxStartY; y < collisionBoxStartY + collisionBoxHeight; y++) {
+                if (map.getMapManager().getPixels()[y][x].isCollide()) {
+                    return startX - x;
                 }
             }
         }
