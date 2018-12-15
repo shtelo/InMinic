@@ -241,7 +241,10 @@ public class Character extends RootObject {
         else
             graphics.drawImage(image, x + width, y, -width, height, null);
 
-        new Text((width - graphics.getFontMetrics().stringWidth(name)) / 2 + x, (int) (y - TEXT_FORMAT.getSize()), name, TEXT_FORMAT).render(graphics);
+        int textWidth = TEXT_FORMAT.getStringWidth(name);
+        int textX = ((width - textWidth) / 2 + x);
+        int textY = (int) (y - TEXT_FORMAT.getSize());
+        new Text(textX, textY, name, TEXT_FORMAT).render(graphics);
     }
 
     private BufferedImage cropImage(BufferedImage src, int x, int y) {
