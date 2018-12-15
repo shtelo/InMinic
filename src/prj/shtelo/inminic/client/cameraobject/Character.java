@@ -80,6 +80,8 @@ public class Character extends RootObject {
 
         if (root.getClient().getConnected())
             root.getClient().send("playerName\t" + name);
+
+        root.getDiscordRPCManager().setPlayerInformation(name.toUpperCase());
     }
 
     @Override

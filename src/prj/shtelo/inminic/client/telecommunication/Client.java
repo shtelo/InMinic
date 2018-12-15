@@ -31,7 +31,6 @@ public class Client {
         try {
             socket = new Socket(host, port);
         } catch (IOException e) {
-//            JOptionPane.showMessageDialog(null, "서버에 연결할 수 없습니다!", "InMinic Error", JOptionPane.ERROR_MESSAGE);
             JOptionPane.showMessageDialog(null, "서버에 연결할 수 없습니다!\n오프라인 모드로 계속합니다.", "InMinic Info", JOptionPane.INFORMATION_MESSAGE);
             return;
         }

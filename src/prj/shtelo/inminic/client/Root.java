@@ -4,6 +4,7 @@ import prj.shtelo.inminic.client.cameraobject.Camera;
 import prj.shtelo.inminic.client.cameraobject.Character;
 import prj.shtelo.inminic.client.cameraobject.Map;
 import prj.shtelo.inminic.client.cameraobject.Player;
+import prj.shtelo.inminic.client.discordrpc.DiscordRPCManager;
 import prj.shtelo.inminic.client.root.Color;
 import prj.shtelo.inminic.client.root.Display;
 import prj.shtelo.inminic.client.root.KeyManager;
@@ -31,10 +32,11 @@ public class Root implements Runnable {
     private boolean running;
 
     private KeyManager keyManager;
-
     private Camera camera;
     private Character character;
     private Map map;
+
+    private DiscordRPCManager discordRPCManager;
 
     Root(String title, int width, int height, int fps, String name, String host, int port) throws IOException {
         this.title = title;
@@ -47,6 +49,8 @@ public class Root implements Runnable {
     }
 
     private void init() throws IOException {
+        discordRPCManager = new DiscordRPCManager("523303985478762506", "");
+
         keyManager = new KeyManager();
         camera = new Camera(0, 0, 2, this);
         hud = new HUD(new TextFormat("./res/font/D2Coding.ttc", 15, Color.text), camera, keyManager, this);
@@ -72,6 +76,8 @@ public class Root implements Runnable {
             rootObject.tick();
         }
         hud.tick();
+
+        discordRPCManager.update();
     }
 
     private void render() {
@@ -142,6 +148,7 @@ public class Root implements Runnable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        discordRPCManager.shutdown();
     }
 
     public Player findPlayerByName(String name) {
@@ -176,5 +183,9 @@ public class Root implements Runnable {
 
     public String getName() {
         return name;
+    }
+
+    public DiscordRPCManager getDiscordRPCManager() {
+        return discordRPCManager;
     }
 }
