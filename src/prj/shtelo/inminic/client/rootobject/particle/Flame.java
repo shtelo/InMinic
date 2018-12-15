@@ -58,9 +58,14 @@ public class Flame extends RootObject {
 
     @Override
     public void render(Graphics graphics) {
+        int x = (int) camera.getRelativeX(this.x);
+        int y = (int) camera.getRelativeY(this.y);
+
+        if (x < 0 || x > display.getWidth() || y < 0 || y > display.getHeight()) return;
+
         int size = (int) (this.size * camera.getZoom());
 
         graphics.setColor(color);
-        graphics.fillRect((int) camera.getRelativeX(x), (int) camera.getRelativeY(y), size, size);
+        graphics.fillRect(x, y, size, size);
     }
 }

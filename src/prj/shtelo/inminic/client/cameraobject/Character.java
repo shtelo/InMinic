@@ -92,29 +92,36 @@ public class Character extends RootObject {
         collisionBoxStartX = x - width / 2. + collisionBoxX;
         collisionBoxStartY = y - height / 2. + collisionBoxY;
 
-        double offset = 60. / display.getDisplayFps();
-        int maxDelay = (int) (display.getDisplayFps() / 8);
-
         discordRPCManager.setState("가만히 있음");
 
-        if (keyManager.getMove()[0]) {
-            if (getDeltaLeft() > 0) {
-                x -= Math.min(getDeltaLeft(), offset);
-                discordRPCManager.setState("왼쪽으로 걸음");
+        double moveSpeed = 60. / display.getDisplayFps();
+
+        if (keyManager.getMove()[1]) {
+            if (getCoverHeight(moveSpeed) <= 2) {
+                x += moveSpeed;
+                y -= getCoverHeight(moveSpeed);
+            } else if (getDeltaRight() > 0) {
+                x += Math.min(getDeltaRight(), moveSpeed);
             }
-            watchingRight = false;
-        } if (keyManager.getMove()[1]) {
-            if (getDeltaRight() > 0) {
-                x += Math.min(getDeltaRight(), offset);
-                discordRPCManager.setState("오른쪽으로 걸음");
-            }
+            discordRPCManager.setState("오른쪽으로 걸음");
             watchingRight = true;
         }
-        if (keyManager.getMove()[0] && keyManager.getMove()[1])
+        if (keyManager.getMove()[0]) {
+            if (getCoverHeight(-moveSpeed) <= 2) {
+                x -= moveSpeed;
+                y -= getCoverHeight(-moveSpeed);
+            } else if (getDeltaLeft() > 0) {
+                x -= Math.min(getDeltaLeft(), moveSpeed);
+            }
+            discordRPCManager.setState("왼쪽으로 걸음");
+            watchingRight = false;
+        }
+        if (keyManager.getMove()[0] && keyManager.getMove()[1]) {
             discordRPCManager.setState("양쪽으로 걸음");
+        }
 
-        boolean moving = keyManager.getMove()[0] || keyManager.getMove()[1];
-        if (moving) {
+        int maxDelay = (int) (display.getDisplayFps() / 8);
+        if (keyManager.getMove()[0] || keyManager.getMove()[1]) {
             delay++;
 
             if (form == 0) form = 4;
@@ -131,9 +138,7 @@ public class Character extends RootObject {
             form = 0;
         }
 
-        try {
-            gravityAction();
-        } catch (NullPointerException ignored) {}
+        gravityAction();
 
         if (root.getClient().isConnected())
             if (x != previousX || y != previousY || keyManager.isMoveStop())
@@ -165,6 +170,19 @@ public class Character extends RootObject {
             y = (int) y;
         }
         py = y;
+    }
+
+    private int getCoverHeight(double xOffset) {
+        for (int y = (int) collisionBoxStartY; y < collisionBoxStartY + collisionBoxHeight; y++) {
+            if (y < 0 || y >= map.getMapManager().getHeight()) continue;
+            for (int x = (int) (collisionBoxStartX + xOffset); x < collisionBoxStartX + collisionBoxWidth + xOffset; x++) {
+                if (x < 0 || x >= map.getMapManager().getWidth()) continue;
+                if (map.getMapManager().getPixels()[y][x].isCollide()) {
+                    return (int) (collisionBoxHeight - (y - collisionBoxStartY));
+                }
+            }
+        }
+        return Integer.MAX_VALUE;
     }
 
     private int getDeltaY() {
