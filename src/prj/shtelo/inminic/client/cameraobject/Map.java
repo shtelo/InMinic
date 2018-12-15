@@ -36,10 +36,8 @@ public class Map extends RootObject {
         root.getDiscordRPCManager().setMapInformation(name);
         if (root.getClient().isConnected()) {
             root.getDiscordRPCManager().setSmallImageKey("multiplay");
-            root.getDiscordRPCManager().setState(root.getClient().getIP());
         } else {
             root.getDiscordRPCManager().setSmallImageKey("singleplay");
-            root.getDiscordRPCManager().setState("싱글 플레이어");
         }
     }
 

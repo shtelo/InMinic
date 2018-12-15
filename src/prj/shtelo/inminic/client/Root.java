@@ -11,9 +11,11 @@ import prj.shtelo.inminic.client.root.KeyManager;
 import prj.shtelo.inminic.client.root.TextFormat;
 import prj.shtelo.inminic.client.rootobject.HUD;
 import prj.shtelo.inminic.client.rootobject.RootObject;
+import prj.shtelo.inminic.client.rootobject.particle.Flame;
 import prj.shtelo.inminic.client.telecommunication.Client;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 import java.io.IOException;
 
@@ -38,7 +40,7 @@ public class Root implements Runnable {
 
     private DiscordRPCManager discordRPCManager;
 
-    Root(String title, int width, int height, int fps, String name, String host, int port) throws IOException {
+    Root(String title, int width, int height, int fps, String name, String host, int port) {
         this.title = title;
         this.width = width;
         this.height = height;
@@ -64,11 +66,15 @@ public class Root implements Runnable {
             map = new Map(client.getMapName(), camera, this);
         else
             map = new Map("test002", camera, this);
-        character = new Character(11, -100, name, camera, map, keyManager, display, this);
+        character = new Character(11, -100, name, camera, map, keyManager, display, discordRPCManager, this);
     }
 
     private void tick() {
         keyManager.tick();
+
+        if (keyManager.getKeys()[KeyEvent.VK_P])
+            RootObject.add(new Flame(256, 586, display, camera));
+
         camera.tick();
         character.tick();
         map.tick();
@@ -92,10 +98,13 @@ public class Root implements Runnable {
         graphics.fillRect(0, 0, display.getWidth(), display.getHeight());
 
         map.render(graphics);
-        for (RootObject rootObject : RootObject.objects) {
+
+        character.render(graphics);
+        RootObject[] objects = RootObject.getObjectsClone();
+        for (RootObject rootObject : objects) {
             rootObject.render(graphics);
         }
-        character.render(graphics);
+        RootObject.cleanRemoves();
         hud.render(graphics);
 
         bufferStrategy.show();

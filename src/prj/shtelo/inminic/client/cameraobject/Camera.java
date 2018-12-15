@@ -44,4 +44,12 @@ public class Camera {
     public double getZoom() {
         return zoom;
     }
+
+    public double getRelativeX(double x) {
+        return (x - this.x) * zoom + root.getDisplay().getWidth() / 2.;
+    }
+
+    public double getRelativeY(double y) {
+        return (y - this.y) * zoom + root.getDisplay().getHeight() / 2.;
+    }
 }

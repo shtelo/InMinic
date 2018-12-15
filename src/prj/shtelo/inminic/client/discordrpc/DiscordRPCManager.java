@@ -11,8 +11,7 @@ public class DiscordRPCManager {
     private DiscordEventHandlers handlers;
     private DiscordRichPresence presence;
 
-    private String details = "인미닉";
-    private String state = "싱글 플레이어";
+    private String state = "고정";
     private String largeImageKey = "logo";
     private String playerInformation;
     private String smallImageKey = "logo";
@@ -44,7 +43,6 @@ public class DiscordRPCManager {
     }
 
     public void update() {
-        presence.details = details;
         presence.state = state;
         presence.largeImageKey = largeImageKey;
         presence.largeImageText = playerInformation;

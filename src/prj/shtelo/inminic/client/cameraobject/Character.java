@@ -1,6 +1,7 @@
 package prj.shtelo.inminic.client.cameraobject;
 
 import prj.shtelo.inminic.client.Root;
+import prj.shtelo.inminic.client.discordrpc.DiscordRPCManager;
 import prj.shtelo.inminic.client.root.Color;
 import prj.shtelo.inminic.client.root.Display;
 import prj.shtelo.inminic.client.root.KeyManager;
@@ -29,6 +30,7 @@ public class Character extends RootObject {
     private Map map;
     private KeyManager keyManager;
     private Display display;
+    private DiscordRPCManager discordRPCManager;
     private Root root;
 
     private BufferedImage[] images;
@@ -41,7 +43,7 @@ public class Character extends RootObject {
 
     private double previousX, previousY;
 
-    public Character(double x, double y, String name, Camera camera, Map map, KeyManager keyManager, Display display, Root root) {
+    public Character(double x, double y, String name, Camera camera, Map map, KeyManager keyManager, Display display, DiscordRPCManager discordRPCManager, Root root) {
         this.x = x;
         this.y = y;
         this.name = name;
@@ -49,6 +51,7 @@ public class Character extends RootObject {
         this.map = map;
         this.keyManager = keyManager;
         this.display = display;
+        this.discordRPCManager = discordRPCManager;
         this.root = root;
 
         init();
@@ -86,25 +89,29 @@ public class Character extends RootObject {
 
     @Override
     public void tick() {
-         collisionBoxStartX = x - width / 2. + collisionBoxX;
-         collisionBoxStartY = y - height / 2. + collisionBoxY;
+        collisionBoxStartX = x - width / 2. + collisionBoxX;
+        collisionBoxStartY = y - height / 2. + collisionBoxY;
 
         double offset = 60. / display.getDisplayFps();
         int maxDelay = (int) (display.getDisplayFps() / 8);
 
-//        System.out.println(getDeltaLeft());
+        discordRPCManager.setState("가만히 있음");
 
-        if (keyManager.getMove()[0]) {  // 떨어지는 것 처럼, 오른쪽 왼쪽 벽까지의 거리를 구해서 그걸로 써먹는 것으로 하자.
+        if (keyManager.getMove()[0]) {
             if (getDeltaLeft() > 0) {
                 x -= Math.min(getDeltaLeft(), offset);
+                discordRPCManager.setState("왼쪽으로 걸음");
             }
             watchingRight = false;
         } if (keyManager.getMove()[1]) {
             if (getDeltaRight() > 0) {
                 x += Math.min(getDeltaRight(), offset);
+                discordRPCManager.setState("오른쪽으로 걸음");
             }
             watchingRight = true;
         }
+        if (keyManager.getMove()[0] && keyManager.getMove()[1])
+            discordRPCManager.setState("양쪽으로 걸음");
 
         boolean moving = keyManager.getMove()[0] || keyManager.getMove()[1];
         if (moving) {
@@ -143,6 +150,7 @@ public class Character extends RootObject {
             if (velocity > getDeltaY()) {
                 velocity = getDeltaY();
             }
+            discordRPCManager.setState("공중에 뜸");
         } else {
             velocity = 0;
         }

@@ -6,6 +6,7 @@ import prj.shtelo.inminic.client.root.KeyManager;
 import prj.shtelo.inminic.client.root.TextFormat;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class HUD extends RootObject {
     private TextFormat textFormat;
@@ -13,9 +14,8 @@ public class HUD extends RootObject {
     private KeyManager keyManager;
     private Root root;
 
-    private final int count = 5;
-    private String[] lines = new String[count];
-    private Text[] texts = new Text[count];
+    private ArrayList<String> lines = new ArrayList<>();
+    private ArrayList<Text> texts = new ArrayList<>();
 
     private boolean showing = false;
 
@@ -31,17 +31,20 @@ public class HUD extends RootObject {
         if (keyManager.isToggleHUD()) showing = !showing;
 
         if (showing) {
-            lines[0] = "POSITION " + String.format("%f", root.getCharacter().getX()) + " " + String.format("%f", root.getCharacter().getY());
-            lines[1] = "CAMERA " + String.format("%f", camera.getX()) + " " + String.format("%f", camera.getY()) + " " + String.format("%f", camera.getZoom());
-            lines[2] = "OBJECTS " + RootObject.objects.size();
-            lines[3] = "FPS " + String.format("%f", root.getDisplay().getDisplayFps()) + " / " + root.getDisplay().getFps();
-            if (root.getClient().isConnected())
-                lines[4] = "SERVER " + root.getClient().getHost() + ":" + root.getClient().getPort();
-            else
-                lines[4] = "SERVER NOT_CONNECTED";
+            lines = new ArrayList<>();
 
-            for (int i = 0; i < count; i++) {
-                texts[i] = new Text(0, (int) (textFormat.getSize() * (i + 1)), lines[i], textFormat);
+            lines.add("POSITION " + String.format("%f", root.getCharacter().getX()) + " " + String.format("%f", root.getCharacter().getY()));
+            lines.add("CAMERA " + String.format("%f", camera.getX()) + " " + String.format("%f", camera.getY()) + " " + String.format("%f", camera.getZoom()));
+            lines.add("OBJECTS " + RootObject.objects.size());
+            lines.add("FPS " + String.format("%f", root.getDisplay().getDisplayFps()) + " / " + root.getDisplay().getFps());
+            if (root.getClient().isConnected())
+                lines.add("SERVER " + root.getClient().getHost() + ":" + root.getClient().getPort());
+            else
+                lines.add("SERVER NOT_CONNECTED");
+
+            texts = new ArrayList<>();
+            for (int i = 0; i < lines.size(); i++) {
+                texts.add(new Text(0, (int) (textFormat.getSize() * (i + 1)), lines.get(i), textFormat));
             }
         }
     }
@@ -49,8 +52,7 @@ public class HUD extends RootObject {
     @Override
     public void render(Graphics graphics) {
         if (showing) {
-            for (int i = 0; i < count; i++)
-                texts[i].render(graphics);
+            for (Text text : texts) text.render(graphics);
         }
     }
 }
