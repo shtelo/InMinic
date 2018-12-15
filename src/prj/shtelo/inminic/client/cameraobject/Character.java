@@ -78,7 +78,7 @@ public class Character extends RootObject {
         delay = 0;
         watchingRight = true;
 
-        if (root.getClient().getConnected())
+        if (root.getClient().isConnected())
             root.getClient().send("playerName\t" + name);
 
         root.getDiscordRPCManager().setPlayerInformation(name.toUpperCase());
@@ -128,7 +128,7 @@ public class Character extends RootObject {
             gravityAction();
         } catch (NullPointerException ignored) {}
 
-        if (root.getClient().getConnected())
+        if (root.getClient().isConnected())
             if (x != previousX || y != previousY || keyManager.isMoveStop())
                 root.getClient().send("move\t" + toString());
         previousX = x;

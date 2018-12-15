@@ -11,12 +11,12 @@ public class DiscordRPCManager {
     private DiscordEventHandlers handlers;
     private DiscordRichPresence presence;
 
-    private String details;
-    private String state;
-    private String largeImageKey;
+    private String details = "인미닉";
+    private String state = "싱글 플레이어";
+    private String largeImageKey = "logo";
     private String playerInformation;
+    private String smallImageKey = "logo";
     private String mapInformation;
-    private String smallImageText;
 
     public DiscordRPCManager(String applicationId, String steamId) {
         this.applicationId = applicationId;
@@ -41,14 +41,6 @@ public class DiscordRPCManager {
                 } catch (InterruptedException ignored) {}
             }
         }, "RPC-Callback-Handler").start();
-
-        largeImageKey = "logo";
-        mapInformation = "logo";
-
-        details = "싱글 플레이";
-        state = "로비에서 대기중";
-        playerInformation = "플레이어 정보";
-        mapInformation = "맵 정보";
     }
 
     public void update() {
@@ -56,26 +48,14 @@ public class DiscordRPCManager {
         presence.state = state;
         presence.largeImageKey = largeImageKey;
         presence.largeImageText = playerInformation;
-        presence.smallImageKey = mapInformation;
-        presence.smallImageText = smallImageText;
+        presence.smallImageKey = smallImageKey;
+        presence.smallImageText = mapInformation;
 
         lib.Discord_UpdatePresence(presence);
     }
 
     public void shutdown() {
         lib.Discord_Shutdown();
-    }
-
-    public void setDetails(String details) {
-        this.details = details;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public void setLargeImageKey(String largeImageKey) {
-        this.largeImageKey = largeImageKey;
     }
 
     public void setPlayerInformation(String playerInformation) {
@@ -86,7 +66,11 @@ public class DiscordRPCManager {
         this.mapInformation = mapInformation;
     }
 
-    public void setSmallImageText(String smallImageText) {
-        this.smallImageText = smallImageText;
+    public void setSmallImageKey(String smallImageKey) {
+        this.smallImageKey = smallImageKey;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 }

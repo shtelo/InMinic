@@ -60,7 +60,7 @@ public class Root implements Runnable {
         display = new Display(title, width, height, fps, this);
         thread = new Thread(this);
 
-        if (client.getConnected())
+        if (client.isConnected())
             map = new Map(client.getMapName(), camera, this);
         else
             map = new Map("test002", camera, this);

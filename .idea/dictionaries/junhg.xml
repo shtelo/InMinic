@@ -2,8 +2,10 @@
   <dictionary name="junhg">
     <words>
       <w>minic</w>
+      <w>multiplay</w>
       <w>recv</w>
       <w>shtelo</w>
+      <w>singleplay</w>
     </words>
   </dictionary>
 </component>

@@ -47,16 +47,12 @@ public class Client {
         printStream.println(message);
     }
 
-    boolean isConnected() {
+    public boolean isConnected() {
         return connected;
     }
 
     public String getMapName() {
         return mapName;
-    }
-
-    public boolean getConnected() {
-        return connected;
     }
 
     public String getHost() {
@@ -65,6 +61,10 @@ public class Client {
 
     public int getPort() {
         return port;
+    }
+
+    public String getIP() {
+        return host + ':' + port;
     }
 
     void setMapName(String mapName) {

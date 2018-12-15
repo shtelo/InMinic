@@ -35,7 +35,7 @@ public class HUD extends RootObject {
             lines[1] = "CAMERA " + String.format("%f", camera.getX()) + " " + String.format("%f", camera.getY()) + " " + String.format("%f", camera.getZoom());
             lines[2] = "OBJECTS " + RootObject.objects.size();
             lines[3] = "FPS " + String.format("%f", root.getDisplay().getDisplayFps()) + " / " + root.getDisplay().getFps();
-            if (root.getClient().getConnected())
+            if (root.getClient().isConnected())
                 lines[4] = "SERVER " + root.getClient().getHost() + ":" + root.getClient().getPort();
             else
                 lines[4] = "SERVER NOT_CONNECTED";
