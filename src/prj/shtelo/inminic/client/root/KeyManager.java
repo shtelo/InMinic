@@ -10,21 +10,23 @@ public class KeyManager implements KeyListener {
     private boolean[] move = new boolean[2];
     private boolean moveStop = false;
 
-    private boolean zoomUp = false, zoomDown = false;
+    private boolean zoomUp = false, zoomDown = false, resetZoom = false;
     private boolean toggleHUD = false;
+    private boolean jumping = false;
+    private boolean testing = false;
 
     public void tick() {
         move[0] = keys[KeyEvent.VK_A];
         move[1] = keys[KeyEvent.VK_D];
 
-        boolean[] previousKeys = lastKeys.clone();
+        zoomDown = keys[KeyEvent.VK_OPEN_BRACKET];
+        zoomUp = keys[KeyEvent.VK_CLOSE_BRACKET];
+        resetZoom = !lastKeys[KeyEvent.VK_EQUALS] && keys[KeyEvent.VK_EQUALS];
+        toggleHUD = !lastKeys[KeyEvent.VK_BACK_QUOTE] && keys[KeyEvent.VK_BACK_QUOTE];
+        jumping = keys[KeyEvent.VK_SPACE];
+        testing = keys[KeyEvent.VK_P];
 
-        zoomDown = !previousKeys[KeyEvent.VK_OPEN_BRACKET] && keys[KeyEvent.VK_OPEN_BRACKET];
-        zoomUp = !previousKeys[KeyEvent.VK_CLOSE_BRACKET] && keys[KeyEvent.VK_CLOSE_BRACKET];
-
-        toggleHUD = !previousKeys[KeyEvent.VK_BACK_QUOTE] && keys[KeyEvent.VK_BACK_QUOTE];
-
-        moveStop = previousKeys[KeyEvent.VK_A] && !keys[KeyEvent.VK_A] || previousKeys[KeyEvent.VK_D] && !keys[KeyEvent.VK_D];
+        moveStop = lastKeys[KeyEvent.VK_A] && !keys[KeyEvent.VK_A] || lastKeys[KeyEvent.VK_D] && !keys[KeyEvent.VK_D];
 
         lastKeys = keys.clone();
     }
@@ -50,10 +52,6 @@ public class KeyManager implements KeyListener {
         return move;
     }
 
-    public boolean[] getKeys() {
-        return keys;
-    }
-
     public boolean isMoveStop() {
         return moveStop;
     }
@@ -66,7 +64,19 @@ public class KeyManager implements KeyListener {
         return zoomDown;
     }
 
+    public boolean isResetZoom() {
+        return resetZoom;
+    }
+
     public boolean isToggleHUD() {
         return toggleHUD;
+    }
+
+    public boolean isJumping() {
+        return jumping;
+    }
+
+    public boolean isTesting() {
+        return testing;
     }
 }

@@ -22,8 +22,9 @@ public class Camera {
         targetX = root.getCharacter().getX();
         targetY = root.getCharacter().getY();
 
-        if (root.getKeyManager().isZoomUp()) targetZoom += 0.5;
-        if (root.getKeyManager().isZoomDown()) targetZoom -= 0.5;
+        if (root.getKeyManager().isZoomUp()) targetZoom += 2 / root.getDisplay().getDisplayFps();
+        if (root.getKeyManager().isZoomDown()) targetZoom -= 2 / root.getDisplay().getDisplayFps();
+        if (root.getKeyManager().isResetZoom()) targetZoom = 2;
 
         if (targetZoom < 0.5) targetZoom = 0.5;
         else if (targetZoom > 10) targetZoom = 10;

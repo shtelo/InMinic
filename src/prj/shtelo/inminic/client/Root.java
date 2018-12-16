@@ -15,7 +15,6 @@ import prj.shtelo.inminic.client.rootobject.particle.Flame;
 import prj.shtelo.inminic.client.telecommunication.Client;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 import java.io.IOException;
 
@@ -72,7 +71,7 @@ public class Root implements Runnable {
     private void tick() {
         keyManager.tick();
 
-        if (keyManager.getKeys()[KeyEvent.VK_P])
+        if (keyManager.isTesting())
             RootObject.add(new Flame(256, 586, display, camera));
 
         camera.tick();

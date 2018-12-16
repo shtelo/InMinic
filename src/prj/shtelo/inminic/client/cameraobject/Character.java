@@ -11,7 +11,6 @@ import prj.shtelo.inminic.client.rootobject.Text;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -160,7 +159,7 @@ public class Character extends RootObject {
             velocity = 0;
         }
 
-        if (keyManager.getKeys()[KeyEvent.VK_SPACE] && getDeltaY() == 0) {
+        if (keyManager.isJumping() && getDeltaY() == 0) {
             velocity -= 300 / display.getDisplayFps();
         }
 

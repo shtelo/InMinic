@@ -12,7 +12,7 @@ public class Flame extends RootObject {
     private Display display;
     private Camera camera;
 
-    private Color color = new Color(255, 0, 0);
+    private Color color;
     private double velX, velY;
     private double maximumSize, size;
     private double lastTime;
@@ -31,14 +31,16 @@ public class Flame extends RootObject {
     private void init() {
         Random random = new Random();
 
-        velX = (random.nextDouble() - 0.5) * 60 / display.getDisplayFps();
-        velY = -random.nextDouble() * 144 / display.getDisplayFps();
+        velX = (random.nextDouble() - 0.5) * 30 / display.getDisplayFps();
+        velY = -random.nextDouble() * 60 / display.getDisplayFps();
 
         lastTime = System.currentTimeMillis();
         maximumLifeTime = random.nextDouble() * 1500;
         lifeTime = 0;
 
         maximumSize = random.nextDouble() * 4;
+
+        color = new Color(255, 0, 0);
     }
 
     @Override
@@ -50,6 +52,7 @@ public class Flame extends RootObject {
         lastTime = System.currentTimeMillis();
 
         size = maximumSize * Math.max(1 - (lifeTime / maximumLifeTime), 0);
+        color = new Color(255, (int) (255 * Math.max(1 - (lifeTime / maximumLifeTime), 0)), 0);
 
         if (Math.max(1 - (lifeTime / maximumLifeTime), 0) <= 0) {
             destroy();
