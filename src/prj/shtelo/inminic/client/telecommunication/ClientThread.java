@@ -34,7 +34,7 @@ class ClientThread extends Thread {
         message = scanner.nextLine();
         messages = message.split("\t");
 
-        System.out.println("RECV " + message);
+//        System.out.println("RECV " + message);
         if (messages[0].equalsIgnoreCase("serverInfo")) {
             client.setMapName(messages[1]);
 
@@ -67,7 +67,7 @@ class ClientThread extends Thread {
             }
             messages = message.split("\t");
 
-            System.out.println("RECV " + message);
+//            System.out.println("RECV " + message);
 
             if (messages[0].equalsIgnoreCase("connect")) {
                 if (!messages[1].equalsIgnoreCase(root.getCharacter().getName())) {
@@ -93,6 +93,8 @@ class ClientThread extends Thread {
                     player.setWatchingRight(watchingRight);
                     player.setForm(form);
                 }
+            } else if (messages[0].equalsIgnoreCase("chatting")) {
+                root.getChattingBox().add(messages[1] + ": " + messages[2]);
             }
         }
     }

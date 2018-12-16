@@ -9,9 +9,12 @@ import prj.shtelo.inminic.client.root.Color;
 import prj.shtelo.inminic.client.root.Display;
 import prj.shtelo.inminic.client.root.KeyManager;
 import prj.shtelo.inminic.client.root.TextFormat;
+import prj.shtelo.inminic.client.rootobject.ChattingBox;
 import prj.shtelo.inminic.client.rootobject.HUD;
 import prj.shtelo.inminic.client.rootobject.RootObject;
 import prj.shtelo.inminic.client.rootobject.particle.Flame;
+import prj.shtelo.inminic.client.state.State;
+import prj.shtelo.inminic.client.state.StateManager;
 import prj.shtelo.inminic.client.telecommunication.Client;
 
 import java.awt.*;
@@ -34,8 +37,10 @@ public class Root implements Runnable {
 
     private KeyManager keyManager;
     private Camera camera;
-    private Character character;
     private Map map;
+    private Character character;
+    private ChattingBox chattingBox;
+    private StateManager stateManager;
 
     private DiscordRPCManager discordRPCManager;
 
@@ -66,13 +71,14 @@ public class Root implements Runnable {
         else
             map = new Map("test002", camera, this);
         character = new Character(11, -100, name, camera, map, keyManager, display, discordRPCManager, this);
+
+        stateManager = new StateManager(State.Main);
+
+        chattingBox = new ChattingBox(10, display.getHeight() - 100, stateManager, keyManager, client);
     }
 
     private void tick() {
         keyManager.tick();
-
-        if (keyManager.isTesting())
-            RootObject.add(new Flame(256, 586, display, camera));
 
         camera.tick();
         character.tick();
@@ -80,7 +86,15 @@ public class Root implements Runnable {
         for (RootObject rootObject : RootObject.objects) {
             rootObject.tick();
         }
+        chattingBox.tick();
         hud.tick();
+
+        if (keyManager.isTesting()) {
+            RootObject.add(new Flame(256, 586, display, camera));
+        }
+        if (keyManager.isToggleChatting()) {
+            stateManager.setState(stateManager.getState() == State.Chatting ? State.Main : State.Chatting);
+        }
 
         discordRPCManager.update();
     }
@@ -104,6 +118,7 @@ public class Root implements Runnable {
             rootObject.render(graphics);
         }
         RootObject.cleanRemoves();
+        chattingBox.render(graphics);
         hud.render(graphics);
 
         bufferStrategy.show();
@@ -195,5 +210,13 @@ public class Root implements Runnable {
 
     public DiscordRPCManager getDiscordRPCManager() {
         return discordRPCManager;
+    }
+
+    public StateManager getStateManager() {
+        return stateManager;
+    }
+
+    public ChattingBox getChattingBox() {
+        return chattingBox;
     }
 }

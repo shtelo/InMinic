@@ -41,6 +41,7 @@ public class HUD extends RootObject {
                 lines.add("SERVER " + root.getClient().getHost() + ":" + root.getClient().getPort());
             else
                 lines.add("SERVER NOT_CONNECTED");
+            lines.add("STATE " + root.getStateManager().getState());
 
             texts = new ArrayList<>();
             for (int i = 0; i < lines.size(); i++) {

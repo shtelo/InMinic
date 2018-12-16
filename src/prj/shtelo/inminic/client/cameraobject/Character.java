@@ -8,6 +8,7 @@ import prj.shtelo.inminic.client.root.KeyManager;
 import prj.shtelo.inminic.client.root.TextFormat;
 import prj.shtelo.inminic.client.rootobject.RootObject;
 import prj.shtelo.inminic.client.rootobject.Text;
+import prj.shtelo.inminic.client.state.State;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -91,36 +92,41 @@ public class Character extends RootObject {
         collisionBoxStartX = x - width / 2. + collisionBoxX;
         collisionBoxStartY = y - height / 2. + collisionBoxY;
 
-        discordRPCManager.setState("가만히 있음");
+        if (root.getStateManager().getState() == State.Main) {
+            discordRPCManager.setState("가만히 있음");
 
-        double moveSpeed = 60. / display.getDisplayFps();
+            double moveSpeed = 60. / display.getDisplayFps();
 
-        if (keyManager.getMove()[1]) {
-            if (getCoverHeight(moveSpeed) <= 2) {
-                x += moveSpeed;
-                y -= getCoverHeight(moveSpeed);
-            } else if (getDeltaRight() > 0) {
-                x += Math.min(getDeltaRight(), moveSpeed);
+            if (keyManager.getMove()[1]) {
+                if (getCoverHeight(moveSpeed) <= 2) {
+                    x += moveSpeed;
+                    y -= getCoverHeight(moveSpeed);
+                } else if (getDeltaRight() > 0) {
+                    x += Math.min(getDeltaRight(), moveSpeed);
+                }
+                discordRPCManager.setState("오른쪽으로 걸음");
+                watchingRight = true;
             }
-            discordRPCManager.setState("오른쪽으로 걸음");
-            watchingRight = true;
-        }
-        if (keyManager.getMove()[0]) {
-            if (getCoverHeight(-moveSpeed) <= 2) {
-                x -= moveSpeed;
-                y -= getCoverHeight(-moveSpeed);
-            } else if (getDeltaLeft() > 0) {
-                x -= Math.min(getDeltaLeft(), moveSpeed);
+            if (keyManager.getMove()[0]) {
+                if (getCoverHeight(-moveSpeed) <= 2) {
+                    x -= moveSpeed;
+                    y -= getCoverHeight(-moveSpeed);
+                } else if (getDeltaLeft() > 0) {
+                    x -= Math.min(getDeltaLeft(), moveSpeed);
+                }
+                discordRPCManager.setState("왼쪽으로 걸음");
+                watchingRight = false;
             }
-            discordRPCManager.setState("왼쪽으로 걸음");
-            watchingRight = false;
-        }
-        if (keyManager.getMove()[0] && keyManager.getMove()[1]) {
-            discordRPCManager.setState("양쪽으로 걸음");
+            if (keyManager.getMove()[0] && keyManager.getMove()[1]) {
+                discordRPCManager.setState("양쪽으로 걸음");
+            }
+        } else {
+            discordRPCManager.setState("채팅 입력중");
         }
 
         int maxDelay = (int) (display.getDisplayFps() / 8);
-        if (keyManager.getMove()[0] || keyManager.getMove()[1]) {
+//        if (keyManager.getMove()[0] || keyManager.getMove()[1]) {
+        if (x != previousX || y != previousY || keyManager.isMoveStop()) {
             delay++;
 
             if (form == 0) form = 4;
@@ -159,8 +165,9 @@ public class Character extends RootObject {
             velocity = 0;
         }
 
-        if (keyManager.isJumping() && getDeltaY() == 0) {
-            velocity -= 300 / display.getDisplayFps();
+        if (root.getStateManager().getState() == State.Main) {
+            if (keyManager.isJumping() && getDeltaY() == 0)
+                velocity -= 300 / display.getDisplayFps();
         }
 
         y += velocity;

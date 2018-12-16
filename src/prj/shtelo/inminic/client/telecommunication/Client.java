@@ -43,8 +43,12 @@ public class Client {
     }
 
     public void send(String message) {
-        System.out.println("SEND " + message);
+//        System.out.println("SEND " + message);
         printStream.println(message);
+    }
+
+    public void chatting(String message) {
+        send("chatting\t" + message);
     }
 
     public boolean isConnected() {
@@ -61,10 +65,6 @@ public class Client {
 
     public int getPort() {
         return port;
-    }
-
-    public String getIP() {
-        return host + ':' + port;
     }
 
     void setMapName(String mapName) {

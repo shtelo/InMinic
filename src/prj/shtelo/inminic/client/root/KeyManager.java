@@ -8,12 +8,16 @@ public class KeyManager implements KeyListener {
 
     private boolean[] keys = new boolean[count], lastKeys = new boolean[count];
     private boolean[] move = new boolean[2];
-    private boolean moveStop = false;
+
+    private String queue = "";
 
     private boolean zoomUp = false, zoomDown = false, resetZoom = false;
     private boolean toggleHUD = false;
     private boolean jumping = false;
     private boolean testing = false;
+    private boolean toggleChatting = false;
+    private boolean moveStop = false;
+    private boolean backspace = false;
 
     public void tick() {
         move[0] = keys[KeyEvent.VK_A];
@@ -25,6 +29,8 @@ public class KeyManager implements KeyListener {
         toggleHUD = !lastKeys[KeyEvent.VK_BACK_QUOTE] && keys[KeyEvent.VK_BACK_QUOTE];
         jumping = keys[KeyEvent.VK_SPACE];
         testing = keys[KeyEvent.VK_P];
+        toggleChatting = !lastKeys[KeyEvent.VK_ENTER] && keys[KeyEvent.VK_ENTER];
+        backspace = !lastKeys[KeyEvent.VK_BACK_SPACE] && keys[KeyEvent.VK_BACK_SPACE];
 
         moveStop = lastKeys[KeyEvent.VK_A] && !keys[KeyEvent.VK_A] || lastKeys[KeyEvent.VK_D] && !keys[KeyEvent.VK_D];
 
@@ -38,6 +44,8 @@ public class KeyManager implements KeyListener {
     public void keyPressed(KeyEvent e) {
         try {
             keys[e.getKeyCode()] = true;
+            if ("`1234567890-=~!@#$%^&*()_+qwertyuiop[]\\QWERTYUIOP{}|asdfghjkl;'ASDFGHJKL:\"zxcvbnm,./ZXCVBNM<>? ".indexOf(e.getKeyChar()) != -1)
+                queue += e.getKeyChar();
         } catch (ArrayIndexOutOfBoundsException ignored) {}
     }
 
@@ -78,5 +86,23 @@ public class KeyManager implements KeyListener {
 
     public boolean isTesting() {
         return testing;
+    }
+
+    public boolean isToggleChatting() {
+        return toggleChatting;
+    }
+
+    public boolean isBackspace() {
+        return backspace;
+    }
+
+    public String getQueue() {
+        String queue = this.queue;
+        this.queue = "";
+        return queue;
+    }
+
+    public void resetQueue() {
+        queue = "";
     }
 }

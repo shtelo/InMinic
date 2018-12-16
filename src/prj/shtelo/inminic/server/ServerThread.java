@@ -28,19 +28,25 @@ class ServerThread extends Thread {
             printStream.println("player\t" + serverThread.getPlayer().toString());
         }
 
-        String[] playerInfos = scanner.nextLine().split("\t");
+        String[] playerInfos;
+        try {
+            playerInfos = scanner.nextLine().split("\t");
+        } catch (NoSuchElementException e) {
+            disconnect();
+            return;
+        }
 
         player = new Player(0, 0, playerInfos[1]);
 
-        server.announce("connect\t" + player.toString());
-
         server.getClients().add(this);
+
+        server.announce("connect\t" + player.toString());
     }
 
     private void disconnect() {
         System.out.println(socket.getLocalSocketAddress() + "이(가) 서버에서 퇴장했습니다.");
-        server.announce("disconnect\t" + player.toString());
         server.getClients().remove(this);
+        server.announce("disconnect\t" + player.toString());
     }
 
     @Override
@@ -63,6 +69,9 @@ class ServerThread extends Thread {
                 player.setY(Double.parseDouble(messages[3]));
                 player.setWatchingRight(Boolean.parseBoolean(messages[4]));
                 server.announce(message);
+            } else if (messages[0].equalsIgnoreCase("chatting")) {
+                System.out.println(message);
+                server.announce("chatting\t" + player.getName() + "\t" + messages[1]);
             }
 
             System.out.println(socket.getLocalSocketAddress() + ": " + message);
