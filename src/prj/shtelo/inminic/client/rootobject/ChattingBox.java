@@ -53,6 +53,10 @@ public class ChattingBox extends RootObject {
                 inserting = inserting.substring(0, inserting.length() - 1);
 
             if (keyManager.isToggleChatting() && !inserting.equals("")) {
+                while (inserting.charAt(0) == ' ')
+                    inserting = inserting.substring(1);
+                while (inserting.charAt(inserting.length() - 1) == ' ')
+                    inserting = inserting.substring(0, inserting.length() - 2);
 
                 if (inserting.charAt(0) != '@') {
                     if (client.isConnected()) {

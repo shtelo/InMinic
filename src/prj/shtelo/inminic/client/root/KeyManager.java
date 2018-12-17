@@ -45,7 +45,7 @@ public class KeyManager implements KeyListener {
     public void keyPressed(KeyEvent e) {
         try {
             keys[e.getKeyCode()] = true;
-            if ("`1234567890-=~!@#$%^&*()_+qwertyuiop[]\\QWERTYUIOP{}|asdfghjkl;'ASDFGHJKL:\"zxcvbnm,./ZXCVBNM<>? ".indexOf(e.getKeyChar()) != -1)
+            if (0x20 <= e.getKeyChar() && e.getKeyChar() < 65535)
                 queue += e.getKeyChar();
         } catch (ArrayIndexOutOfBoundsException ignored) {}
     }
