@@ -1,8 +1,8 @@
 package prj.shtelo.inminic.client.telecommunication;
 
 import prj.shtelo.inminic.client.Root;
+import prj.shtelo.inminic.client.rootobject.RootObject;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
@@ -15,8 +15,11 @@ public class Client {
     private Root root;
 
     private PrintStream printStream;
+    private ClientThread clientThread;
 
-    private String mapName;
+    public Client(Root root) {
+        this.root = root;
+    }
 
     public Client(String host, int port, Root root) throws IOException {
         this.host = host;
@@ -31,20 +34,53 @@ public class Client {
         try {
             socket = new Socket(host, port);
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "서버에 연결할 수 없습니다!\n오프라인 모드로 계속합니다.", "InMinic Info", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
         connected = true;
 
         printStream = new PrintStream(socket.getOutputStream());
 
-        ClientThread clientThread = new ClientThread(socket, this, root);
+        send("playerName\t" + root.getCharacter().getName());
+
+        clientThread = new ClientThread(socket, this, root);
         clientThread.start();
     }
 
     public void send(String message) {
-//        System.out.println("SEND " + message);
         printStream.println(message);
+    }
+
+    public void connect(String host, int port) {
+        disconnect();
+
+        this.host = host;
+        this.port = port;
+
+        try {
+            init();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void connect(String host) {
+        connect(host, 1010);
+    }
+
+    public void disconnect() {
+        if (!connected)
+            return;
+        printStream.close();
+        try {
+            clientThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        changeMapName("test001");
+        root.getCharacter().setX(0);
+        root.getCharacter().setY(0);
+        RootObject.sweep();
+        connected = false;
     }
 
     public void chatting(String message) {
@@ -55,10 +91,6 @@ public class Client {
         return connected;
     }
 
-    public String getMapName() {
-        return mapName;
-    }
-
     public String getHost() {
         return host;
     }
@@ -67,7 +99,7 @@ public class Client {
         return port;
     }
 
-    void setMapName(String mapName) {
-        this.mapName = mapName;
+    void changeMapName(String mapName) {
+        root.getMap().changeMapName(mapName);
     }
 }

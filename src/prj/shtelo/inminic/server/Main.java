@@ -9,7 +9,7 @@ public class Main {
     private final static int PORT = 1010;
     boolean running = false;
 
-    String mapName = "test001";
+    String mapName = "test002";
     private ArrayList<ServerThread> clients = new ArrayList<>();
 
     public static void main(String[] args) throws IOException {

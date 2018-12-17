@@ -42,6 +42,7 @@ public class Character extends RootObject {
     private double velocity;
 
     private double previousX, previousY;
+    private int previousForm;
 
     public Character(double x, double y, String name, Camera camera, Map map, KeyManager keyManager, Display display, DiscordRPCManager discordRPCManager, Root root) {
         this.x = x;
@@ -80,9 +81,6 @@ public class Character extends RootObject {
 
         delay = 0;
         watchingRight = true;
-
-        if (root.getClient().isConnected())
-            root.getClient().send("playerName\t" + name);
 
         root.getDiscordRPCManager().setPlayerInformation(name.toUpperCase());
     }
@@ -125,7 +123,6 @@ public class Character extends RootObject {
         }
 
         int maxDelay = (int) (display.getDisplayFps() / 8);
-//        if (keyManager.getMove()[0] || keyManager.getMove()[1]) {
         if (x != previousX || y != previousY || keyManager.isMoveStop()) {
             delay++;
 
@@ -146,10 +143,11 @@ public class Character extends RootObject {
         gravityAction();
 
         if (root.getClient().isConnected())
-            if (x != previousX || y != previousY || keyManager.isMoveStop())
+            if (x != previousX || y != previousY || form != previousForm)
                 root.getClient().send("move\t" + toString());
         previousX = x;
         previousY = y;
+        previousForm = form;
     }
 
     private double py;
@@ -267,6 +265,14 @@ public class Character extends RootObject {
 
     public String getName() {
         return name;
+    }
+
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public void setY(double y) {
+        this.y = y;
     }
 
     @Override

@@ -51,6 +51,12 @@ public class Map extends RootObject {
         graphics.drawImage(image, x, y, width, height, null);
     }
 
+    public void changeMapName(String name) {
+        this.name = name;
+
+        init();
+    }
+
     MapManager getMapManager() {
         return mapManager;
     }

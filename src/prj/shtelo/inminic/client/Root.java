@@ -25,8 +25,6 @@ public class Root implements Runnable {
     private String title;
     private int width, height, fps;
     private String name;
-    private String host;
-    private int port;
 
     private Display display;
     private Thread thread;
@@ -44,48 +42,43 @@ public class Root implements Runnable {
 
     private DiscordRPCManager discordRPCManager;
 
-    Root(String title, int width, int height, int fps, String name, String host, int port) {
+    Root(String title, int width, int height, int fps, String name) {
         this.title = title;
         this.width = width;
         this.height = height;
         this.fps = fps;
         this.name = name;
-        this.host = host;
-        this.port = port;
     }
 
-    private void init() throws IOException {
+    private void init() {
         discordRPCManager = new DiscordRPCManager("523303985478762506", "");
 
         keyManager = new KeyManager();
         camera = new Camera(0, 0, 2, this);
         hud = new HUD(new TextFormat("./res/font/D2Coding.ttc", 15, Color.text), camera, keyManager, this);
 
-        client = new Client(host, port, this);
-
         display = new Display(title, width, height, fps, this);
         thread = new Thread(this);
 
-        if (client.isConnected())
-            map = new Map(client.getMapName(), camera, this);
-        else
-            map = new Map("test002", camera, this);
+        client = new Client(this);
+
+        map = new Map("test001", camera, this);
         character = new Character(11, -100, name, camera, map, keyManager, display, discordRPCManager, this);
 
         stateManager = new StateManager(State.Main);
 
-        chattingBox = new ChattingBox(10, display.getHeight() - 100, stateManager, keyManager, client);
+        chattingBox = new ChattingBox(200, 30, stateManager, keyManager, client, this);
     }
 
     private void tick() {
         keyManager.tick();
 
         camera.tick();
-        character.tick();
         map.tick();
         for (RootObject rootObject : RootObject.objects) {
             rootObject.tick();
         }
+        character.tick();
         chattingBox.tick();
         hud.tick();
 
@@ -112,12 +105,12 @@ public class Root implements Runnable {
 
         map.render(graphics);
 
-        character.render(graphics);
         RootObject[] objects = RootObject.getObjectsClone();
         for (RootObject rootObject : objects) {
             rootObject.render(graphics);
         }
         RootObject.cleanRemoves();
+        character.render(graphics);
         chattingBox.render(graphics);
         hud.render(graphics);
 
@@ -218,5 +211,9 @@ public class Root implements Runnable {
 
     public ChattingBox getChattingBox() {
         return chattingBox;
+    }
+
+    public Map getMap() {
+        return map;
     }
 }

@@ -22,12 +22,6 @@ class ServerThread extends Thread {
     private void connect() {
         System.out.println(socket.getLocalSocketAddress() + "이(가) 서버에 접속했습니다.");
 
-        printStream.println("serverInfo\t" + server.mapName + "\t" + server.getClients().size());
-
-        for (ServerThread serverThread : server.getClients()) {
-            printStream.println("player\t" + serverThread.getPlayer().toString());
-        }
-
         String[] playerInfos;
         try {
             playerInfos = scanner.nextLine().split("\t");
@@ -38,9 +32,9 @@ class ServerThread extends Thread {
 
         player = new Player(0, 0, playerInfos[1]);
 
-        server.getClients().add(this);
-
         server.announce("connect\t" + player.toString());
+
+        server.getClients().add(this);
     }
 
     private void disconnect() {
@@ -72,6 +66,12 @@ class ServerThread extends Thread {
             } else if (messages[0].equalsIgnoreCase("chatting")) {
                 System.out.println(message);
                 server.announce("chatting\t" + player.getName() + "\t" + messages[1]);
+            } else if (messages[0].equalsIgnoreCase("serverInfo")) {
+                printStream.println("serverInfo\t" + server.mapName + "\t" + server.getClients().size());
+
+                for (ServerThread serverThread : server.getClients()) {
+                    printStream.println("player\t" + serverThread.getPlayer().toString());
+                }
             }
 
             System.out.println(socket.getLocalSocketAddress() + ": " + message);

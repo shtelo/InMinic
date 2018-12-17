@@ -20,6 +20,10 @@ public abstract class RootObject {
         removes = new ArrayList<>();
     }
 
+    public static void sweep() {
+        objects = new ArrayList<>();
+    }
+
     public void tick() {}
 
     public void render(Graphics graphics) {}

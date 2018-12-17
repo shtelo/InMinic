@@ -7,10 +7,10 @@ public class KeyManager implements KeyListener {
     private int count = 256;
 
     private boolean[] keys = new boolean[count], lastKeys = new boolean[count];
-    private boolean[] move = new boolean[2];
 
     private String queue = "";
 
+    private boolean[] move = new boolean[2];
     private boolean zoomUp = false, zoomDown = false, resetZoom = false;
     private boolean toggleHUD = false;
     private boolean jumping = false;
@@ -20,9 +20,10 @@ public class KeyManager implements KeyListener {
     private boolean backspace = false;
 
     public void tick() {
+        boolean shift = keys[KeyEvent.VK_SHIFT];
+
         move[0] = keys[KeyEvent.VK_A];
         move[1] = keys[KeyEvent.VK_D];
-
         zoomDown = keys[KeyEvent.VK_OPEN_BRACKET];
         zoomUp = keys[KeyEvent.VK_CLOSE_BRACKET];
         resetZoom = !lastKeys[KeyEvent.VK_EQUALS] && keys[KeyEvent.VK_EQUALS];
