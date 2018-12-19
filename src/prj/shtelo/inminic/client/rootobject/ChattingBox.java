@@ -1,20 +1,14 @@
 package prj.shtelo.inminic.client.rootobject;
 
 import prj.shtelo.inminic.client.Root;
-import prj.shtelo.inminic.client.root.KeyManager;
 import prj.shtelo.inminic.client.root.TextFormat;
 import prj.shtelo.inminic.client.state.State;
-import prj.shtelo.inminic.client.state.StateManager;
-import prj.shtelo.inminic.client.telecommunication.Client;
 
 import java.awt.*;
 import java.util.ArrayList;
 
 public class ChattingBox extends RootObject {
     private int x, y;
-    private StateManager stateManager;
-    private KeyManager keyManager;
-    private Client client;
     private Root root;
 
     private ArrayList<String> messages;
@@ -22,12 +16,9 @@ public class ChattingBox extends RootObject {
 
     private TextFormat textFormat;
 
-    public ChattingBox(int x, int y, StateManager stateManager, KeyManager keyManager, Client client, Root root) {
+    public ChattingBox(int x, int y, Root root) {
         this.x = x;
         this.y = y;
-        this.stateManager = stateManager;
-        this.keyManager = keyManager;
-        this.client = client;
         this.root = root;
 
         init();
@@ -46,47 +37,57 @@ public class ChattingBox extends RootObject {
 
     @Override
     public void tick() {
-        if (stateManager.getState() == State.Chatting) {
-            inserting += keyManager.getQueue();
+        if (root.getStateManager().getState() == State.Chatting) {
+            inserting += root.getKeyManager().getQueue();
 
-            if (keyManager.isBackspace() && !inserting.isEmpty())
+            if (root.getKeyManager().isBackspace() && !inserting.isEmpty())
                 inserting = inserting.substring(0, inserting.length() - 1);
 
-            if (keyManager.isToggleChatting() && !inserting.equals("")) {
-                while (inserting.charAt(0) == ' ')
-                    inserting = inserting.substring(1);
-                while (inserting.charAt(inserting.length() - 1) == ' ')
-                    inserting = inserting.substring(0, inserting.length() - 2);
+            if (root.getKeyManager().isToggleChatting()) {
+                if (!inserting.equals("")) {
+                    while (inserting.charAt(0) == ' ')
+                        inserting = inserting.substring(1);
+                    while (inserting.charAt(inserting.length() - 1) == ' ')
+                        inserting = inserting.substring(0, inserting.length() - 2);
 
-                if (inserting.charAt(0) != '@') {
-                    if (client.isConnected()) {
-                        client.chatting(inserting);
-                    } else {
-                        add(root.getCharacter().getName(), inserting);
-                    }
-                } else {
-                    String[] insertings = inserting.split(" ");
-
-                    if (insertings[0].equalsIgnoreCase("@connect")) {
-                        if (insertings.length == 2) {
-                            client.connect(insertings[1]);
-                        } else if (insertings.length == 3) {
-                            client.connect(insertings[1], Integer.parseInt(insertings[2]));
+                    if (inserting.charAt(0) != '@') {
+                        if (root.getClient().isConnected()) {
+                            root.getClient().chatting(inserting);
+                        } else {
+                            add(root.getCharacter().getName(), inserting);
                         }
-                    } else if (insertings[0].equalsIgnoreCase("@disconnect")) {
-                        client.disconnect();
+                    } else {
+                        String[] insertings = inserting.split(" ");
+
+                        if (insertings[0].equalsIgnoreCase("@connect")) {
+                            boolean problem = true;
+                            
+                            if (insertings.length == 2) {
+                                problem = root.getClient().connect(insertings[1]);
+                            } else if (insertings.length == 3) {
+                                try {
+                                    problem = root.getClient().connect(insertings[1], Integer.parseInt(insertings[2]));
+                                } catch (NumberFormatException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            
+                            System.out.println(problem);
+                        } else if (insertings[0].equalsIgnoreCase("@disconnect")) {
+                            root.getClient().disconnect();
+                        }
                     }
+                    inserting = "";
                 }
-                inserting = "";
             }
         } else {
-            keyManager.resetQueue();
+            root.getKeyManager().resetQueue();
         }
     }
 
     @Override
     public void render(Graphics graphics) {
-        if (stateManager.getState() == State.Chatting) {
+        if (root.getStateManager().getState() == State.Chatting) {
             Graphics2D graphics2D = (Graphics2D) graphics;
             graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
             graphics2D.fillRect(x, y, 1000, 20);

@@ -3,8 +3,6 @@ package prj.shtelo.inminic.client.cameraobject;
 import prj.shtelo.inminic.client.Root;
 import prj.shtelo.inminic.client.discordrpc.DiscordRPCManager;
 import prj.shtelo.inminic.client.root.Color;
-import prj.shtelo.inminic.client.root.Display;
-import prj.shtelo.inminic.client.root.KeyManager;
 import prj.shtelo.inminic.client.root.TextFormat;
 import prj.shtelo.inminic.client.rootobject.RootObject;
 import prj.shtelo.inminic.client.rootobject.Text;
@@ -26,17 +24,13 @@ public class Character extends RootObject {
 
     private double x, y;
     private String name;
-    private Camera camera;
-    private Map map;
-    private KeyManager keyManager;
-    private Display display;
     private DiscordRPCManager discordRPCManager;
     private Root root;
 
     private BufferedImage[] images;
 
     private int form = 0;
-    private int delay;
+    private int formDelay;
     private boolean watchingRight;
 
     private double velocity;
@@ -44,14 +38,10 @@ public class Character extends RootObject {
     private double previousX, previousY;
     private int previousForm;
 
-    public Character(double x, double y, String name, Camera camera, Map map, KeyManager keyManager, Display display, DiscordRPCManager discordRPCManager, Root root) {
+    public Character(double x, double y, String name, DiscordRPCManager discordRPCManager, Root root) {
         this.x = x;
         this.y = y;
         this.name = name;
-        this.camera = camera;
-        this.map = map;
-        this.keyManager = keyManager;
-        this.display = display;
         this.discordRPCManager = discordRPCManager;
         this.root = root;
 
@@ -79,10 +69,10 @@ public class Character extends RootObject {
         images[6] = cropImage(image, 64, 64);
         images[7] = cropImage(image, 96, 64);
 
-        delay = 0;
+        formDelay = 0;
         watchingRight = true;
 
-        root.getDiscordRPCManager().setPlayerInformation(name.toUpperCase());
+        discordRPCManager.setPlayerInformation(name.toUpperCase());
     }
 
     @Override
@@ -93,50 +83,51 @@ public class Character extends RootObject {
         if (root.getStateManager().getState() == State.Main) {
             discordRPCManager.setState("가만히 있음");
 
-            double moveSpeed = 60. / display.getDisplayFps();
+            double moveSpeed = 60. / root.getDisplay().getDisplayFps();
+            if (root.getKeyManager().isShift()) moveSpeed *= 2;
 
-            if (keyManager.getMove()[1]) {
+            if (root.getKeyManager().getMove()[1]) {
                 if (getCoverHeight(moveSpeed) <= 2) {
                     x += moveSpeed;
                     y -= getCoverHeight(moveSpeed);
                 } else if (getDeltaRight() > 0) {
                     x += Math.min(getDeltaRight(), moveSpeed);
                 }
-                discordRPCManager.setState("오른쪽으로 걸음");
+                discordRPCManager.setState(root.getKeyManager().isShift() ? "오른쪽으로 달림" : "오른쪽으로 걸음");
                 watchingRight = true;
             }
-            if (keyManager.getMove()[0]) {
+            if (root.getKeyManager().getMove()[0]) {
                 if (getCoverHeight(-moveSpeed) <= 2) {
                     x -= moveSpeed;
                     y -= getCoverHeight(-moveSpeed);
                 } else if (getDeltaLeft() > 0) {
                     x -= Math.min(getDeltaLeft(), moveSpeed);
                 }
-                discordRPCManager.setState("왼쪽으로 걸음");
+                discordRPCManager.setState(root.getKeyManager().isShift() ? "왼쪽으로 달림" : "왼쪽으로 걸음");
                 watchingRight = false;
             }
-            if (keyManager.getMove()[0] && keyManager.getMove()[1]) {
-                discordRPCManager.setState("양쪽으로 걸음");
+            if (root.getKeyManager().getMove()[0] && root.getKeyManager().getMove()[1]) {
+                discordRPCManager.setState(root.getKeyManager().isShift() ? "양쪽으로 달림" : "양쪽으로 걸음");
             }
         } else {
             discordRPCManager.setState("채팅 입력중");
         }
 
-        int maxDelay = (int) (display.getDisplayFps() / 8);
-        if (x != previousX || y != previousY || keyManager.isMoveStop()) {
-            delay++;
+        int maxDelay = (int) (root.getDisplay().getDisplayFps() / 8);
+        if (x != previousX || y != previousY || root.getKeyManager().isMoveStop()) {
+            formDelay++;
 
             if (form == 0) form = 4;
 
-            if (delay >= maxDelay) {
+            if (formDelay >= maxDelay) {
                 if (form == 4) form = 5;
                 else if (form == 5) form = 6;
                 else if (form == 6) form = 7;
                 else form = 4;
-                delay -= maxDelay;
+                formDelay -= maxDelay;
             }
         } else {
-            delay = 0;
+            formDelay = 0;
             form = 0;
         }
 
@@ -154,7 +145,7 @@ public class Character extends RootObject {
 
     private void gravityAction() {
         if (getDeltaY() > 0) {
-            velocity += 1411.2 / display.getDisplayFps() / display.getDisplayFps();
+            velocity += 1411.2 / root.getDisplay().getDisplayFps() / root.getDisplay().getDisplayFps();
             if (velocity > getDeltaY()) {
                 velocity = getDeltaY();
             }
@@ -164,8 +155,8 @@ public class Character extends RootObject {
         }
 
         if (root.getStateManager().getState() == State.Main) {
-            if (keyManager.isJumping() && getDeltaY() == 0)
-                velocity -= 300 / display.getDisplayFps();
+            if (root.getKeyManager().isJumping() && getDeltaY() == 0)
+                velocity -= 300 / root.getDisplay().getDisplayFps();
         }
 
         y += velocity;
@@ -178,10 +169,10 @@ public class Character extends RootObject {
 
     private int getCoverHeight(double xOffset) {
         for (int y = (int) collisionBoxStartY; y < collisionBoxStartY + collisionBoxHeight; y++) {
-            if (y < 0 || y >= map.getMapManager().getHeight()) continue;
+            if (y < 0 || y >= root.getMap().getMapManager().getHeight()) continue;
             for (int x = (int) (collisionBoxStartX + xOffset); x < collisionBoxStartX + collisionBoxWidth + xOffset; x++) {
-                if (x < 0 || x >= map.getMapManager().getWidth()) continue;
-                if (map.getMapManager().getPixels()[y][x].isCollide()) {
+                if (x < 0 || x >= root.getMap().getMapManager().getWidth()) continue;
+                if (root.getMap().getMapManager().getPixels()[y][x].isCollide()) {
                     return (int) (collisionBoxHeight - (y - collisionBoxStartY));
                 }
             }
@@ -191,12 +182,12 @@ public class Character extends RootObject {
 
     private int getDeltaY() {
         int offsetY = 0;
-        for (int y = (int) (collisionBoxStartY + collisionBoxHeight); y + offsetY < map.getMapManager().getHeight(); offsetY++) {
+        for (int y = (int) (collisionBoxStartY + collisionBoxHeight); y + offsetY < root.getMap().getMapManager().getHeight(); offsetY++) {
             for (int x = (int) collisionBoxStartX; x < collisionBoxStartX + collisionBoxWidth; x++) {
-                if (x < 0 || x >= map.getMapManager().getWidth() || y + offsetY < 0 || y + offsetY >= map.getMapManager().getHeight()) {
+                if (x < 0 || x >= root.getMap().getMapManager().getWidth() || y + offsetY < 0 || y + offsetY >= root.getMap().getMapManager().getHeight()) {
                     continue;
                 }
-                if (map.getMapManager().getPixels()[y + offsetY][x].isCollide()) {
+                if (root.getMap().getMapManager().getPixels()[y + offsetY][x].isCollide()) {
                     return offsetY;
                 }
             }
@@ -206,11 +197,11 @@ public class Character extends RootObject {
 
     private int getDeltaRight() {
         int startX = (int) (collisionBoxStartX + collisionBoxWidth);
-        for (int x = startX; x < map.getMapManager().getWidth(); x++) {
-            if (x < 0 || x >= map.getMapManager().getWidth()) continue;
+        for (int x = startX; x < root.getMap().getMapManager().getWidth(); x++) {
+            if (x < 0 || x >= root.getMap().getMapManager().getWidth()) continue;
             for (int y = (int) collisionBoxStartY; y < collisionBoxStartY + collisionBoxHeight; y++) {
-                if (y < 0 || y >= map.getMapManager().getHeight()) continue;
-                if (map.getMapManager().getPixels()[y][x].isCollide()) {
+                if (y < 0 || y >= root.getMap().getMapManager().getHeight()) continue;
+                if (root.getMap().getMapManager().getPixels()[y][x].isCollide()) {
                     return x - startX;
                 }
             }
@@ -221,10 +212,10 @@ public class Character extends RootObject {
     private int getDeltaLeft() {
         int startX = (int) collisionBoxStartX;
         for (int x = startX; x > 0; x--) {
-            if (x >= map.getMapManager().getWidth()) continue;
+            if (x >= root.getMap().getMapManager().getWidth()) continue;
             for (int y = (int) collisionBoxStartY; y < collisionBoxStartY + collisionBoxHeight; y++) {
-                if (y < 0 || y >= map.getMapManager().getHeight()) continue;
-                if (map.getMapManager().getPixels()[y][x].isCollide()) {
+                if (y < 0 || y >= root.getMap().getMapManager().getHeight()) continue;
+                if (root.getMap().getMapManager().getPixels()[y][x].isCollide()) {
                     return startX - x;
                 }
             }
@@ -235,10 +226,10 @@ public class Character extends RootObject {
     @Override
     public void render(Graphics graphics) {
         BufferedImage image = images[form];
-        int width = (int) (this.width * camera.getZoom());
-        int height = (int) (this.height * camera.getZoom());
-        int x = (int) ((this.x - camera.getX()) * camera.getZoom() + (display.getWidth() - width) / 2);
-        int y = (int) ((this.y - camera.getY()) * camera.getZoom() + (display.getHeight() - height) / 2);
+        int width = (int) (this.width * root.getCamera().getZoom());
+        int height = (int) (this.height * root.getCamera().getZoom());
+        int x = (int) ((this.x - root.getCamera().getX()) * root.getCamera().getZoom() + (root.getDisplay().getWidth() - width) / 2);
+        int y = (int) ((this.y - root.getCamera().getY()) * root.getCamera().getZoom() + (root.getDisplay().getHeight() - height) / 2);
 
         if (watchingRight)
             graphics.drawImage(image, x, y, width, height, null);

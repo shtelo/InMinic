@@ -7,7 +7,6 @@ import prj.shtelo.inminic.client.rootobject.RootObject;
 import javax.swing.*;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -68,7 +67,8 @@ class ClientThread extends Thread {
             try {
                 message = recv();
             } catch (NoSuchElementException e) {
-                JOptionPane.showMessageDialog(null, "서버가 종료되었습니다.", "InMinic Information", JOptionPane.INFORMATION_MESSAGE);
+                root.getClient().disconnect();
+                JOptionPane.showMessageDialog(null, "서버가 종료되었습니다.", "InMinic Info", JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
             messages = message.split("\t");

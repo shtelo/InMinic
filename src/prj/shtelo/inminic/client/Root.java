@@ -19,7 +19,6 @@ import prj.shtelo.inminic.client.telecommunication.Client;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
-import java.io.IOException;
 
 public class Root implements Runnable {
     private String title;
@@ -55,19 +54,19 @@ public class Root implements Runnable {
 
         keyManager = new KeyManager();
         camera = new Camera(0, 0, 2, this);
-        hud = new HUD(new TextFormat("./res/font/D2Coding.ttc", 15, Color.text), camera, keyManager, this);
+        hud = new HUD(new TextFormat("./res/font/D2Coding.ttc", 15, Color.text), this);
 
         display = new Display(title, width, height, fps, this);
         thread = new Thread(this);
 
         client = new Client(this);
 
-        map = new Map("test001", camera, this);
-        character = new Character(11, -100, name, camera, map, keyManager, display, discordRPCManager, this);
+        map = new Map("test001", discordRPCManager, this);
+        character = new Character(11, -100, name, discordRPCManager, this);
 
         stateManager = new StateManager(State.Main);
 
-        chattingBox = new ChattingBox(200, 30, stateManager, keyManager, client, this);
+        chattingBox = new ChattingBox(200, 30, this);
     }
 
     private void tick() {
@@ -146,7 +145,7 @@ public class Root implements Runnable {
         stop();
     }
 
-    void start() throws IOException {
+    void start() {
         init();
 
         if (running)

@@ -50,7 +50,7 @@ public class Client {
         printStream.println(message);
     }
 
-    public void connect(String host, int port) {
+    public boolean connect(String host, int port) {
         disconnect();
 
         this.host = host;
@@ -60,16 +60,20 @@ public class Client {
             init();
         } catch (IOException e) {
             e.printStackTrace();
+            return true;
         }
+
+        return false;
     }
 
-    public void connect(String host) {
-        connect(host, 1010);
+    public boolean connect(String host) {
+        return connect(host, 1010);
     }
 
     public void disconnect() {
         if (!connected)
             return;
+        connected = false;
         printStream.close();
         try {
             clientThread.join();
@@ -80,7 +84,6 @@ public class Client {
         root.getCharacter().setX(0);
         root.getCharacter().setY(0);
         RootObject.sweep();
-        connected = false;
     }
 
     public void chatting(String message) {

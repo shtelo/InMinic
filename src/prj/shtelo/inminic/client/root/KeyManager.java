@@ -10,6 +10,8 @@ public class KeyManager implements KeyListener {
 
     private String queue = "";
 
+    private boolean shift = false;
+
     private boolean[] move = new boolean[2];
     private boolean zoomUp = false, zoomDown = false, resetZoom = false;
     private boolean toggleHUD = false;
@@ -20,7 +22,7 @@ public class KeyManager implements KeyListener {
     private boolean backspace = false;
 
     public void tick() {
-        boolean shift = keys[KeyEvent.VK_SHIFT];
+        shift = keys[KeyEvent.VK_SHIFT];
 
         move[0] = keys[KeyEvent.VK_A];
         move[1] = keys[KeyEvent.VK_D];
@@ -95,6 +97,10 @@ public class KeyManager implements KeyListener {
 
     public boolean isBackspace() {
         return backspace;
+    }
+
+    public boolean isShift() {
+        return shift;
     }
 
     public String getQueue() {

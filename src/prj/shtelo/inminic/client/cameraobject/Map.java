@@ -1,7 +1,9 @@
 package prj.shtelo.inminic.client.cameraobject;
 
+import prj.shtelo.inminic.client.Log;
 import prj.shtelo.inminic.client.Root;
 import prj.shtelo.inminic.client.cameraobject.map.MapManager;
+import prj.shtelo.inminic.client.discordrpc.DiscordRPCManager;
 import prj.shtelo.inminic.client.rootobject.RootObject;
 
 import java.awt.*;
@@ -9,15 +11,15 @@ import java.awt.image.BufferedImage;
 
 public class Map extends RootObject {
     private String name;
-    private Camera camera;
+    private DiscordRPCManager discordRPCManager;
     private Root root;
 
     private MapManager mapManager;
     private BufferedImage image;
 
-    public Map(String name, Camera camera, Root root) {
+    public Map(String name, DiscordRPCManager discordRPCManager, Root root) {
         this.name = name;
-        this.camera = camera;
+        this.discordRPCManager = discordRPCManager;
         this.root = root;
 
         init();
@@ -33,20 +35,22 @@ public class Map extends RootObject {
             }
         }
 
-        root.getDiscordRPCManager().setMapInformation(name);
+        discordRPCManager.setMapInformation(name);
         if (root.getClient().isConnected()) {
-            root.getDiscordRPCManager().setSmallImageKey("multiplay");
+            discordRPCManager.setSmallImageKey("multiplay");
+            Log.i("INMINIC", "MULTI");
         } else {
-            root.getDiscordRPCManager().setSmallImageKey("singleplay");
+            discordRPCManager.setSmallImageKey("singleplay");
+            Log.i("INMINIC", "SINGLE");
         }
     }
 
     @Override
     public void render(Graphics graphics) {
-        int x = (int) (-camera.getX() * camera.getZoom() + root.getDisplay().getWidth() / 2);
-        int y = (int) (-camera.getY() * camera.getZoom() + root.getDisplay().getHeight() / 2);
-        int width = (int) (image.getWidth() * camera.getZoom());
-        int height = (int) (image.getHeight() * camera.getZoom());
+        int x = (int) (-root.getCamera().getX() * root.getCamera().getZoom() + root.getDisplay().getWidth() / 2);
+        int y = (int) (-root.getCamera().getY() * root.getCamera().getZoom() + root.getDisplay().getHeight() / 2);
+        int width = (int) (image.getWidth() * root.getCamera().getZoom());
+        int height = (int) (image.getHeight() * root.getCamera().getZoom());
 
         graphics.drawImage(image, x, y, width, height, null);
     }
