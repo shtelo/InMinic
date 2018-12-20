@@ -168,9 +168,10 @@ public class Character extends RootObject {
     }
 
     private int getCoverHeight(double xOffset) {
-        for (int y = (int) collisionBoxStartY; y < collisionBoxStartY + collisionBoxHeight; y++) {
+        int y, x;
+        for (y = (int) collisionBoxStartY; y < collisionBoxStartY + collisionBoxHeight; y++) {
             if (y < 0 || y >= root.getMap().getMapManager().getHeight()) continue;
-            for (int x = (int) (collisionBoxStartX + xOffset); x < collisionBoxStartX + collisionBoxWidth + xOffset; x++) {
+            for (x = (int) (collisionBoxStartX + xOffset); x < collisionBoxStartX + collisionBoxWidth + xOffset; x++) {
                 if (x < 0 || x >= root.getMap().getMapManager().getWidth()) continue;
                 if (root.getMap().getMapManager().getPixels()[y][x].isCollide()) {
                     return (int) (collisionBoxHeight - (y - collisionBoxStartY));
@@ -181,10 +182,13 @@ public class Character extends RootObject {
     }
 
     private int getDeltaY() {
+        int y, x;
         int offsetY = 0;
-        for (int y = (int) (collisionBoxStartY + collisionBoxHeight); y + offsetY < root.getMap().getMapManager().getHeight(); offsetY++) {
-            for (int x = (int) collisionBoxStartX; x < collisionBoxStartX + collisionBoxWidth; x++) {
-                if (x < 0 || x >= root.getMap().getMapManager().getWidth() || y + offsetY < 0 || y + offsetY >= root.getMap().getMapManager().getHeight()) {
+        for (y = (int) (collisionBoxStartY + collisionBoxHeight);
+             y + offsetY < root.getMap().getMapManager().getHeight(); offsetY++) {
+            for (x = (int) collisionBoxStartX; x < collisionBoxStartX + collisionBoxWidth; x++) {
+                if (x < 0 || x >= root.getMap().getMapManager().getWidth() ||
+                        y + offsetY < 0 || y + offsetY >= root.getMap().getMapManager().getHeight()) {
                     continue;
                 }
                 if (root.getMap().getMapManager().getPixels()[y + offsetY][x].isCollide()) {
@@ -196,10 +200,11 @@ public class Character extends RootObject {
     }
 
     private int getDeltaRight() {
+        int y, x;
         int startX = (int) (collisionBoxStartX + collisionBoxWidth);
-        for (int x = startX; x < root.getMap().getMapManager().getWidth(); x++) {
+        for (x = startX; x < root.getMap().getMapManager().getWidth(); x++) {
             if (x < 0 || x >= root.getMap().getMapManager().getWidth()) continue;
-            for (int y = (int) collisionBoxStartY; y < collisionBoxStartY + collisionBoxHeight; y++) {
+            for (y = (int) collisionBoxStartY; y < collisionBoxStartY + collisionBoxHeight; y++) {
                 if (y < 0 || y >= root.getMap().getMapManager().getHeight()) continue;
                 if (root.getMap().getMapManager().getPixels()[y][x].isCollide()) {
                     return x - startX;
@@ -210,10 +215,11 @@ public class Character extends RootObject {
     }
 
     private int getDeltaLeft() {
+        int y, x;
         int startX = (int) collisionBoxStartX;
-        for (int x = startX; x > 0; x--) {
+        for (x = startX; x > 0; x--) {
             if (x >= root.getMap().getMapManager().getWidth()) continue;
-            for (int y = (int) collisionBoxStartY; y < collisionBoxStartY + collisionBoxHeight; y++) {
+            for (y = (int) collisionBoxStartY; y < collisionBoxStartY + collisionBoxHeight; y++) {
                 if (y < 0 || y >= root.getMap().getMapManager().getHeight()) continue;
                 if (root.getMap().getMapManager().getPixels()[y][x].isCollide()) {
                     return startX - x;

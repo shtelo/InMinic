@@ -2,6 +2,7 @@ package prj.shtelo.inminic.client.cameraobject;
 
 import prj.shtelo.inminic.client.Root;
 import prj.shtelo.inminic.client.root.Display;
+import prj.shtelo.inminic.client.state.State;
 
 public class Camera {
     private double x, y, zoom;
@@ -22,9 +23,11 @@ public class Camera {
         targetX = root.getCharacter().getX();
         targetY = root.getCharacter().getY();
 
-        if (root.getKeyManager().isZoomUp()) targetZoom += 2 / root.getDisplay().getDisplayFps();
-        if (root.getKeyManager().isZoomDown()) targetZoom -= 2 / root.getDisplay().getDisplayFps();
-        if (root.getKeyManager().isResetZoom()) targetZoom = 2;
+        if (root.getStateManager().getState() == State.Main) {
+            if (root.getKeyManager().isZoomUp()) targetZoom += 2 / root.getDisplay().getDisplayFps();
+            if (root.getKeyManager().isZoomDown()) targetZoom -= 2 / root.getDisplay().getDisplayFps();
+            if (root.getKeyManager().isResetZoom()) targetZoom = 2;
+        }
 
         if (targetZoom < 0.5) targetZoom = 0.5;
         else if (targetZoom > 10) targetZoom = 10;
