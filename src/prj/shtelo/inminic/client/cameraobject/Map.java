@@ -1,6 +1,5 @@
 package prj.shtelo.inminic.client.cameraobject;
 
-import prj.shtelo.inminic.client.Log;
 import prj.shtelo.inminic.client.Root;
 import prj.shtelo.inminic.client.cameraobject.map.MapManager;
 import prj.shtelo.inminic.client.discordrpc.DiscordRPCManager;
@@ -38,10 +37,8 @@ public class Map extends RootObject {
         discordRPCManager.setMapInformation(name);
         if (root.getClient().isConnected()) {
             discordRPCManager.setSmallImageKey("multiplay");
-            Log.i("INMINIC", "MULTI");
         } else {
             discordRPCManager.setSmallImageKey("singleplay");
-            Log.i("INMINIC", "SINGLE");
         }
     }
 
