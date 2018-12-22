@@ -66,12 +66,6 @@ public class Display {
         frame.setVisible(true);
     }
 
-    private void setSize(int width, int height) {
-        size = new Dimension(width, height);
-
-        setSize(size);
-    }
-
     private void setSize(Dimension size) {
         width = (int) size.getWidth();
         height = (int) size.getHeight();

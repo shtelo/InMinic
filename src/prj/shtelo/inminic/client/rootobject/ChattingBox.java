@@ -75,6 +75,19 @@ public class ChattingBox extends RootObject {
                             System.out.println(problem);
                         } else if (insertings[0].equalsIgnoreCase("@disconnect")) {
                             root.getClient().disconnect();
+                        } else if (insertings[0].equalsIgnoreCase("@tp")) {
+                            if (insertings.length >= 3) {
+                                double nextX, nextY;
+                                try {
+                                    nextX = Double.parseDouble(insertings[1]);
+                                    nextY = Double.parseDouble(insertings[2]);
+
+                                    root.getCharacter().setX(nextX);
+                                    root.getCharacter().setY(nextY);
+                                } catch (NumberFormatException e) {
+                                    e.printStackTrace();
+                                }
+                            }
                         }
                     }
                     inserting = "";
