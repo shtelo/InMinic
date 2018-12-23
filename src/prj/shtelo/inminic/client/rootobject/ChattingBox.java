@@ -14,6 +14,8 @@ public class ChattingBox extends RootObject {
     private ArrayList<String> messages;
     private String inserting;
 
+    private char commandChar;
+
     private TextFormat textFormat;
 
     public ChattingBox(int x, int y, Root root) {
@@ -29,6 +31,8 @@ public class ChattingBox extends RootObject {
         inserting = "";
 
         textFormat = new TextFormat("./res/font/D2Coding.ttc", 16, Color.white);
+
+        commandChar = '$';
     }
 
     public void add(String name, String chatting) {
@@ -50,7 +54,7 @@ public class ChattingBox extends RootObject {
                     while (inserting.charAt(inserting.length() - 1) == ' ')
                         inserting = inserting.substring(0, inserting.length() - 2);
 
-                    if (inserting.charAt(0) != '@') {
+                    if (inserting.charAt(0) != commandChar) {
                         if (root.getClient().isConnected()) {
                             root.getClient().chatting(inserting);
                         } else {
@@ -59,7 +63,7 @@ public class ChattingBox extends RootObject {
                     } else {
                         String[] insertings = inserting.split(" ");
 
-                        if (insertings[0].equalsIgnoreCase("@connect")) {
+                        if (insertings[0].equalsIgnoreCase(commandChar + "connect")) {
                             boolean problem = true;
                             
                             if (insertings.length == 2) {
@@ -71,11 +75,9 @@ public class ChattingBox extends RootObject {
                                     e.printStackTrace();
                                 }
                             }
-                            
-                            System.out.println(problem);
-                        } else if (insertings[0].equalsIgnoreCase("@disconnect")) {
+                        } else if (insertings[0].equalsIgnoreCase(commandChar + "disconnect")) {
                             root.getClient().disconnect();
-                        } else if (insertings[0].equalsIgnoreCase("@tp")) {
+                        } else if (insertings[0].equalsIgnoreCase(commandChar + "tp")) {
                             if (insertings.length >= 3) {
                                 double nextX, nextY;
                                 try {

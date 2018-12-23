@@ -35,8 +35,6 @@ class ClientThread extends Thread {
         message = recv();
         messages = message.split("\t");
 
-        boolean alreadyNameAppeared = false;
-
         if (messages[0].equalsIgnoreCase("serverInfo")) {
             client.changeMapName(messages[1]);
 
@@ -46,14 +44,8 @@ class ClientThread extends Thread {
                 String name = messages[1];
                 double x = Double.parseDouble(messages[2]);
                 double y = Double.parseDouble(messages[3]);
-                RootObject.add(new Player(x, y, name, root.getCamera(), root));
-                if (name.equalsIgnoreCase(root.getName())) {
-                    if (!alreadyNameAppeared) {
-                        alreadyNameAppeared = true;
-                    } else {
-                        JOptionPane.showMessageDialog(null, "같은 이름의 플레이어가 서버에 있습니다.", "InMinic Error", JOptionPane.ERROR_MESSAGE);
-                        System.exit(0);
-                    }
+                if (!name.equalsIgnoreCase(root.getName())) {
+                    RootObject.add(new Player(x, y, name, root.getCamera(), root));
                 }
             }
         }

@@ -82,7 +82,8 @@ public class Root implements Runnable {
         hud.tick();
 
         if (keyManager.isTesting()) {
-            RootObject.add(new Flame(256, 586, display, camera));
+            for (int i = 0; i < 5; i++)
+                RootObject.add(new Flame(256, 586, display, camera));
         }
         if (keyManager.isToggleChatting()) {
             stateManager.setState(stateManager.getState() == State.Chatting ? State.Main : State.Chatting);

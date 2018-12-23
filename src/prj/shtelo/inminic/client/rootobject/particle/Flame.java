@@ -13,7 +13,8 @@ public class Flame extends RootObject {
     private Camera camera;
 
     private Color color;
-    private double velX, velY;
+//    private double velX, velY;
+    private ParticleMotion particleMotion;
     private double maximumSize, size;
     private double lastTime;
     private double maximumLifeTime;
@@ -31,8 +32,12 @@ public class Flame extends RootObject {
     private void init() {
         Random random = new Random();
 
-        velX = (random.nextDouble() - 0.5) * 30 / display.getDisplayFps();
-        velY = -random.nextDouble() * 60 / display.getDisplayFps();
+//        velX = (random.nextDouble() - 0.5) * 30 / display.getDisplayFps();
+//        velY = -random.nextDouble() * 60 / display.getDisplayFps();
+
+        particleMotion = new ParticleMotion(
+                (random.nextDouble() - 0.5) * 30 * 5 / display.getDisplayFps(),
+                -random.nextDouble() * 60 * 5 / display.getDisplayFps());
 
         lastTime = System.currentTimeMillis();
         maximumLifeTime = random.nextDouble() * 1500;
@@ -45,8 +50,8 @@ public class Flame extends RootObject {
 
     @Override
     public void tick() {
-        x += velX;
-        y += velY;
+        x = particleMotion.moveX(x);
+        y = particleMotion.moveY(y);
 
         lifeTime += System.currentTimeMillis() - lastTime;
         lastTime = System.currentTimeMillis();
